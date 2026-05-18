@@ -70,10 +70,10 @@
 
     .lamp-rig {
       position: fixed;
-      left: clamp(-150px, -8vw, -96px);
-      top: clamp(148px, 18vh, 214px);
-      width: clamp(350px, 32vw, 500px);
-      aspect-ratio: 420 / 560;
+      left: clamp(-110px, -5vw, -64px);
+      top: clamp(112px, 14vh, 172px);
+      width: clamp(430px, 29vw, 600px);
+      aspect-ratio: 420 / 660;
       z-index: 2;
       opacity: .82;
       filter: drop-shadow(0 24px 42px rgba(0, 0, 0, .38));
@@ -102,7 +102,7 @@
 
     .lamp-head {
       left: 44.8%;
-      top: 6.8%;
+      top: 7.6%;
       width: 54.8%;
       height: auto;
       transform: rotate(var(--lamp-head-angle, -16deg));
@@ -142,47 +142,75 @@
 
     .lamp-head-pivot {
       position: absolute;
-      left: 52.9%;
-      top: 21.8%;
+      left: 51.9%;
+      top: 20.3%;
       width: 1px;
       height: 1px;
     }
 
     .lamp-switch {
       position: absolute;
-      left: 38.5%;
-      top: 82.6%;
-      width: clamp(42px, 4.1vw, 58px);
-      height: clamp(20px, 1.9vw, 26px);
-      border: 1px solid rgba(248, 250, 252, .72);
-      border-radius: 999px;
-      background: rgba(15, 23, 42, .82);
-      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, .5), 0 8px 22px rgba(2, 6, 23, .28);
-      transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+      left: 40%;
+      top: 88.8%;
+      width: clamp(48px, 3.9vw, 66px);
+      height: clamp(28px, 2.3vw, 38px);
+      border: 2px solid rgba(12, 18, 32, .86);
+      border-radius: 7px;
+      background: #111827;
+      box-shadow: inset 0 0 0 1px rgba(248, 250, 252, .22), 0 9px 22px rgba(2, 6, 23, .3);
+      transform: rotate(-1deg);
+      transition: border-color .18s ease, box-shadow .18s ease;
     }
 
     .lamp-switch span {
       position: absolute;
-      left: 4px;
-      top: 50%;
-      width: clamp(12px, 1.25vw, 17px);
-      height: clamp(12px, 1.25vw, 17px);
-      border-radius: 50%;
-      background: #cbd5e1;
-      transform: translateY(-50%);
+      inset: 5px;
+      width: auto;
+      height: auto;
+      border-radius: 5px;
+      background: linear-gradient(145deg, #334155, #111827);
+      box-shadow: inset 0 3px 5px rgba(255, 255, 255, .12), inset 0 -5px 10px rgba(2, 6, 23, .5);
       transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
     }
 
+    .lamp-switch span::before,
+    .lamp-switch span::after {
+      position: absolute;
+      top: 50%;
+      color: rgba(248, 250, 252, .72);
+      font-size: clamp(8px, .72vw, 11px);
+      font-weight: 900;
+      line-height: 1;
+      transform: translateY(-50%);
+    }
+
+    .lamp-switch span::before {
+      content: "O";
+      left: 20%;
+    }
+
+    .lamp-switch span::after {
+      content: "I";
+      right: 22%;
+    }
+
     .lamp-scene.is-on .lamp-switch {
-      border-color: rgba(255, 252, 226, .94);
-      background: rgba(94, 234, 212, .22);
-      box-shadow: 0 0 26px rgba(255, 249, 196, .28), inset 0 0 0 1px rgba(255, 255, 255, .22);
+      border-color: rgba(15, 23, 42, .92);
+      box-shadow: 0 0 26px rgba(255, 177, 71, .28), inset 0 0 0 1px rgba(248, 250, 252, .18);
     }
 
     .lamp-scene.is-on .lamp-switch span {
-      background: #fef9c3;
-      transform: translate(calc(clamp(42px, 4.1vw, 58px) - clamp(12px, 1.25vw, 17px) - 8px), -50%);
-      box-shadow: 0 0 18px rgba(254, 249, 195, .82);
+      background: linear-gradient(145deg, #ffb23f, #f97316 65%, #c2410c);
+      transform: translateY(-1px);
+      box-shadow: 0 0 16px rgba(251, 146, 60, .75), inset 0 4px 7px rgba(255, 255, 255, .28), inset 0 -5px 10px rgba(124, 45, 18, .42);
+    }
+
+    .lamp-scene.is-on .lamp-switch span::before {
+      color: rgba(124, 45, 18, .55);
+    }
+
+    .lamp-scene.is-on .lamp-switch span::after {
+      color: rgba(255, 247, 237, .92);
     }
 
     .lamp-beam {
@@ -208,12 +236,12 @@
     }
 
     .shell {
-      --lamp-space: clamp(430px, 36vw, 560px);
-      width: min(1040px, calc(100% - var(--lamp-space) - 30px));
-      margin: 0 30px 0 var(--lamp-space);
+      --lamp-space: clamp(470px, 34vw, 700px);
+      width: min(1180px, calc(100% - var(--lamp-space) - 42px));
+      margin: 0 42px 0 var(--lamp-space);
       display: grid;
-      grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
-      gap: clamp(28px, 5vw, 68px);
+      grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+      gap: clamp(36px, 5vw, 84px);
       position: relative;
       z-index: 2;
     }
@@ -713,17 +741,15 @@
   <div class="lamp-scene" aria-hidden="true">
     <div class="lamp-beam"></div>
     <div class="lamp-rig">
-      <svg class="lamp-body" viewBox="0 0 420 560" role="img" aria-label="">
-        <path class="lamp-fill" d="M58 486c25-38 169-54 242-20l-8 57c-74 30-199 27-266-9l15-28Z"/>
-        <path class="lamp-shadow" d="M63 494c57 24 156 26 224 5l-3 23c-72 27-191 24-254-10l11-21c7 0 14 1 22 3Z"/>
-        <path class="lamp-stroke" d="M103 462C64 322 78 171 219 122"/>
-        <path class="lamp-stroke-soft" d="M117 450C84 329 98 190 219 122"/>
-        <path class="lamp-stroke" d="M219 122c55 14 94 58 120 133 20 58 18 131-5 206"/>
-        <path class="lamp-stroke-soft" d="M233 136c47 18 80 59 101 122"/>
-        <circle class="lamp-fill" cx="219" cy="122" r="25"/>
-        <circle class="lamp-shadow" cx="219" cy="122" r="12"/>
-        <circle class="lamp-fill" cx="339" cy="254" r="22"/>
-        <path class="lamp-fill" d="M315 452c30 2 57 15 74 36l-14 34c-26 14-64 18-102 10l-4-51c10-16 25-25 46-29Z"/>
+      <svg class="lamp-body" viewBox="0 0 420 660" role="img" aria-label="">
+        <path class="lamp-fill" d="M44 585c34-43 187-55 270-18l-9 60c-82 33-224 31-296-7l16-35Z"/>
+        <path class="lamp-shadow" d="M52 596c65 24 173 25 246 3l-4 27c-80 30-216 28-283-8l14-30c8 2 17 5 27 8Z"/>
+        <path class="lamp-stroke" d="M92 557C41 386 67 225 218 134"/>
+        <path class="lamp-stroke-soft" d="M108 542C64 393 90 245 218 134"/>
+        <circle class="lamp-fill" cx="218" cy="134" r="25"/>
+        <circle class="lamp-shadow" cx="218" cy="134" r="12"/>
+        <path class="lamp-fill" d="M213 548c33 2 62 15 79 38l-14 39c-31 18-80 18-118 3l9-53c10-17 25-26 44-27Z"/>
+        <path class="lamp-shadow" d="M174 617c34 8 75 7 105-6l-2 15c-31 17-79 17-116 3l3-17c3 2 6 4 10 5Z"/>
       </svg>
       <svg class="lamp-head" viewBox="0 0 230 170" aria-hidden="true">
         <path class="lamp-fill" d="M37 39 215 25l-23 121-143-14-31-46 19-47Z"/>
@@ -930,7 +956,7 @@
         }
 
         var pivotRect = lampPivot.getBoundingClientRect();
-        var headRect = lampHead.getBoundingClientRect();
+        var rigRect = lampPivot.parentElement.getBoundingClientRect();
         var targetRect = target.getBoundingClientRect();
         var pivotX = pivotRect.left + pivotRect.width / 2;
         var pivotY = pivotRect.top + pivotRect.height / 2;
@@ -940,7 +966,7 @@
         var aimDy = targetY - pivotY;
         var angleRad = Math.atan2(aimDy, aimDx);
         var angle = angleRad * 180 / Math.PI;
-        var shadeReach = Math.max(headRect.width * 0.68, 92);
+        var shadeReach = Math.max(rigRect.width * 0.285, 106);
         var lampX = pivotX + Math.cos(angleRad) * shadeReach;
         var lampY = pivotY + Math.sin(angleRad) * shadeReach;
         var dx = targetX - lampX;
