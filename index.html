@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Александр — портфолио AI-продуктов</title>
+  <meta name="description" content="Портфолио рабочих AI-инструментов: SverkAI и VK Beat Distributor.">
+  <link rel="preload" as="image" href="assets/sverkai.png">
+  <style>
+    :root {
+      --paper: #f8faf7;
+      --surface: #ffffff;
+      --ink: #12211b;
+      --muted: #58685f;
+      --line: #d8e2dc;
+      --green: #126b42;
+      --green-2: #1f8b55;
+      --red: #b43c38;
+      --blue: #275d8a;
+      --gold: #b97714;
+      --shadow: 0 18px 60px rgba(18, 33, 27, .12);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px clamp(18px, 4vw, 54px);
+      background: rgba(248, 250, 247, .9);
+      border-bottom: 1px solid rgba(216, 226, 220, .85);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28);
+      flex: 0 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 9px 11px;
+      border-radius: 7px;
+    }
+
+    .nav a:hover {
+      color: var(--green);
+      background: #eef5f0;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 86vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      background-image:
+        linear-gradient(180deg, rgba(18, 33, 27, .18), rgba(18, 33, 27, .86)),
+        url("assets/sverkai.png");
+      background-size: cover;
+      background-position: center top;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 22vh;
+      background: linear-gradient(180deg, rgba(248, 250, 247, 0), var(--paper));
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 112px 0 82px;
+      color: #fff;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #d5ffe8;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 2px;
+      background: #d5ffe8;
+      border-radius: 999px;
+    }
+
+    h1 {
+      max-width: 920px;
+      margin: 0;
+      font-size: clamp(42px, 8vw, 92px);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: rgba(255, 255, 255, .9);
+      font-size: clamp(18px, 2.2vw, 24px);
+      line-height: 1.5;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-weight: 900;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--green);
+    }
+
+    .button.ghost {
+      color: #fff;
+      border-color: rgba(255, 255, 255, .44);
+      background: rgba(255, 255, 255, .1);
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+    }
+
+    section {
+      padding: 74px clamp(18px, 4vw, 54px);
+    }
+
+    .section-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--green);
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 22px;
+    }
+
+    .profile-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .profile-card {
+      padding: clamp(24px, 4vw, 38px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 14px 42px rgba(18, 33, 27, .08);
+    }
+
+    .profile-card h3 {
+      font-size: clamp(28px, 4vw, 42px);
+    }
+
+    .profile-card p {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .resume-facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .resume-fact {
+      min-height: 116px;
+      padding: 18px;
+      border-radius: var(--radius);
+      background: #f5f8f6;
+      border: 1px solid var(--line);
+    }
+
+    .resume-fact strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--green);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .resume-fact span {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .skill-card {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .skill-card h3 {
+      font-size: 21px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .skill-card ul {
+      display: grid;
+      gap: 9px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .skill-card li {
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .skill-card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .58em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(360px, 1.05fr);
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .project:nth-child(even) {
+      grid-template-columns: minmax(360px, 1.05fr) minmax(0, .95fr);
+    }
+
+    .project:nth-child(even) .project-image {
+      order: -1;
+    }
+
+    .project-body {
+      padding: clamp(24px, 4vw, 42px);
+    }
+
+    .project-kicker {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .project-description {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.62;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 22px 0 0;
+    }
+
+    .tag {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f5f8f6;
+      color: #34463b;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+
+    .detail p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .project-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .project-actions .button {
+      border-color: var(--line);
+    }
+
+    .project-image {
+      min-height: 420px;
+      background: #eaf1ed;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .project-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22);
+      pointer-events: none;
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .process-item {
+      padding: 22px;
+      border-left: 4px solid var(--green);
+      background: #ffffff;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(18, 33, 27, .07);
+    }
+
+    .process-item strong {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 18px;
+    }
+
+    .process-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .note {
+      margin-top: 26px;
+      padding: 18px 20px;
+      border: 1px solid #efd9b7;
+      border-radius: var(--radius);
+      background: #fff8ea;
+      color: #65440b;
+      line-height: 1.5;
+    }
+
+    footer {
+      padding: 36px clamp(18px, 4vw, 54px) 48px;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        position: static;
+      }
+
+      .hero {
+        min-height: 78vh;
+      }
+
+      .section-head,
+      .profile-panel,
+      .project,
+      .project:nth-child(even),
+      .metrics,
+      .process,
+      .skills-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .project:nth-child(even) .project-image {
+        order: 0;
+      }
+
+      .project-image {
+        min-height: 300px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero-inner {
+        padding-top: 76px;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .resume-facts {
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Александр · AI / automation portfolio</span>
+    </div>
+    <nav class="nav" aria-label="Навигация">
+      <a href="#profile">Профиль</a>
+      <a href="#projects">Проекты</a>
+      <a href="#skills">Навыки</a>
+      <a href="#approach">Подход</a>
+      <a href="#demo">Как смотреть</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Рабочие продукты, не макеты</p>
+      <h1>AI-инструменты, которые решают прикладные задачи</h1>
+      <p class="lead">Александр Антипов, специалист по AI-автоматизации и внедрению LLM-решений. В портфолио — два живых проекта, где AI, backend и продуктовая логика собраны в рабочие инструменты.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#projects">Посмотреть проекты</a>
+        <a class="button ghost" href="#demo">Как демонстрировать</a>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="profile">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>Кандидатский профиль</h2>
+          <p class="section-copy">Позиционирование из резюме: AI Solutions Specialist / LLM Automation Engineer с фокусом на автоматизацию ручных операций, работу с документами и проектирование end-to-end AI workflow.</p>
+        </div>
+        <div class="profile-panel">
+          <div class="profile-card">
+            <p class="project-kicker">AI automation / LLM workflow</p>
+            <h3>Специалист, который превращает ручные процессы в работающие AI-инструменты</h3>
+            <p>2+ года практики с AI-технологиями, Claude, ChatGPT и LLM-пайплайнами. Опыт включает анализ требований, декомпозицию задач, prompt engineering, валидацию результата и финальную постобработку данных.</p>
+            <p>Сильная сторона — быстро разбираться в прикладной задаче, собрать понятный workflow и довести его до интерфейса, которым можно пользоваться.</p>
+          </div>
+          <div class="profile-card">
+            <div class="resume-facts">
+              <div class="resume-fact"><strong>2+ года</strong><span>практики с AI, LLM-процессами и автоматизацией</span></div>
+              <div class="resume-fact"><strong>900+</strong><span>реализованных задач с Claude и ChatGPT</span></div>
+              <div class="resume-fact"><strong>50+</strong><span>клиентов в проектной работе и частной практике</span></div>
+              <div class="resume-fact"><strong>QA</strong><span>Postman, SQL, Jira, Selenium/Python, тест-кейсы</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>Проекты в портфолио</h2>
+          <p class="section-copy">Я показываю не только интерфейсы, но и продуктовую логику: парсинг документов, работу с внешними API, AI-анализ, экспорт отчетов, авторизацию и сценарии, которые закрывают понятную бизнес-задачу.</p>
+        </div>
+
+        <div class="metrics" aria-label="Краткая сводка">
+          <div class="metric"><strong>2</strong><span>живых демо для просмотра</span></div>
+          <div class="metric"><strong>AI</strong><span>интеграции с Claude / Anthropic API</span></div>
+          <div class="metric"><strong>API</strong><span>работа с VK и файловыми форматами</span></div>
+          <div class="metric"><strong>Full-stack</strong><span>от backend-логики до UX</span></div>
+        </div>
+
+        <div class="project-list" style="margin-top:28px">
+          <article class="project">
+            <div class="project-body">
+              <p class="project-kicker">FinTech / документооборот</p>
+              <h3>SverkAI</h3>
+              <p class="project-description">Сервис сверяет акты сверки из Excel и PDF, находит расхождения, объясняет причины расхождения сальдо и формирует Excel-отчет. Для сложных документов используется экспертный AI-анализ поверх программно рассчитанной числовой базы.</p>
+              <div class="tag-row">
+                <span class="tag">Python</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">pandas</span>
+                <span class="tag">PDF parsing</span>
+                <span class="tag">Anthropic API</span>
+                <span class="tag">Excel export</span>
+              </div>
+              <div class="project-grid">
+                <div class="detail">
+                  <h4>Что важно</h4>
+                  <p>Алгоритм сохраняет детерминированную сверку для простых кейсов и включает экспертный режим для сложных актов.</p>
+                </div>
+                <div class="detail">
+                  <h4>Моя роль</h4>
+                  <p>Backend, парсинг, бизнес-логика, AI-объяснения, интерфейс результата, экспорт и временный деплой.</p>
+                </div>
+              </div>
+              <div class="project-actions">
+                <a class="button primary js-sverkai-link" href="https://3c366be7a0b39cdf-79-139-143-29.serveousercontent.com" target="_blank" rel="noreferrer">Открыть демо</a>
+                <a class="button" href="assets/sverkai.png" target="_blank" rel="noreferrer">Скриншот</a>
+              </div>
+            </div>
+            <div class="project-image">
+              <img src="assets/sverkai.png" alt="Интерфейс SverkAI со сводкой сверки документов">
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-body">
+              <p class="project-kicker">MusicTech / VK automation</p>
+              <h3>VK Beat Distributor</h3>
+              <p class="project-description">Инструмент для битмейкера: помогает готовить пост, подбирать VK-группы, проверять правила, адаптировать сообщение через AI и вести историю рассылок. Интерфейс учитывает лимиты и риск массовых отправок.</p>
+              <div class="tag-row">
+                <span class="tag">JavaScript</span>
+                <span class="tag">VK API</span>
+                <span class="tag">HTML/CSS</span>
+                <span class="tag">localStorage</span>
+                <span class="tag">Python proxy</span>
+                <span class="tag">AI prompts</span>
+              </div>
+              <div class="project-grid">
+                <div class="detail">
+                  <h4>Что важно</h4>
+                  <p>Продуктовый сценарий собран вокруг реальной задачи продвижения битов, а не вокруг абстрактной формы отправки.</p>
+                </div>
+                <div class="detail">
+                  <h4>Моя роль</h4>
+                  <p>Проектирование UX, интеграция VK API, клиентская логика, AI-анализ правил и локальный backend-прокси.</p>
+                </div>
+              </div>
+              <div class="project-actions">
+                <a class="button primary js-vk-link" href="https://6fe3293c2554033e-79-139-143-29.serveousercontent.com" target="_blank" rel="noreferrer">Открыть демо</a>
+                <a class="button" href="assets/vk-beat-distributor.png" target="_blank" rel="noreferrer">Скриншот</a>
+              </div>
+            </div>
+            <div class="project-image">
+              <img src="assets/vk-beat-distributor.png" alt="Интерфейс VK Beat Distributor с настройками рассылки">
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" style="background:#ffffff">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>Навыки и зона ценности</h2>
+          <p class="section-copy">Это не просто список технологий: я показываю, какие рабочие задачи могу закрывать — от AI-логики до тестирования API и упаковки результата для пользователя.</p>
+        </div>
+        <div class="skills-layout">
+          <div class="skill-card">
+            <h3>AI и LLM</h3>
+            <ul>
+              <li>Prompt engineering и настройка воспроизводимых AI-результатов</li>
+              <li>Claude, ChatGPT, Gemini и проектирование LLM-пайплайнов</li>
+              <li>Структурирование неунифицированных данных и документов</li>
+            </ul>
+          </div>
+          <div class="skill-card">
+            <h3>Разработка</h3>
+            <ul>
+              <li>Python, FastAPI, JavaScript, HTML/CSS</li>
+              <li>Работа с API, файлами, Excel/PDF и локальными backend-сервисами</li>
+              <li>Интерфейсы для прикладных бизнес-сценариев</li>
+            </ul>
+          </div>
+          <div class="skill-card">
+            <h3>Процессы и QA</h3>
+            <ul>
+              <li>Сбор требований, ТЗ, клиентская коммуникация</li>
+              <li>SQL, Postman, Jira, тест-кейсы и чек-листы</li>
+              <li>Систематизация информации и обучающие материалы</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="approach" style="background:#eef5f0">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>Как я подхожу к разработке</h2>
+          <p class="section-copy">Оба проекта сделаны вокруг конкретного пользователя: бухгалтеру нужно понять причину расхождения, музыканту нужно быстрее и аккуратнее продвигать материал.</p>
+        </div>
+        <div class="process">
+          <div class="process-item">
+            <strong>Сначала задача</strong>
+            <p>Интерфейс строится вокруг основного решения пользователя, а не вокруг технических возможностей.</p>
+          </div>
+          <div class="process-item">
+            <strong>Числа и API под контролем</strong>
+            <p>AI используется как объясняющий слой, но критичные данные считаются и проверяются программно.</p>
+          </div>
+          <div class="process-item">
+            <strong>Демо можно открыть</strong>
+            <p>Проекты подготовлены как живые стенды: есть публичные ссылки, скриншоты и понятные сценарии проверки.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>Как быстро оценить</h2>
+          <p class="section-copy">Оптимальный сценарий для интервьюера: открыть портфолио, посмотреть оба скриншота, затем перейти в один из демо-продуктов и оценить структуру интерфейса и глубину бизнес-логики.</p>
+        </div>
+        <div class="note">
+          Демо-ссылки работают как временный стенд с локальной машины. Если ссылка недоступна, стенд нужно поднять заново, после чего кнопки на этой странице обновляются стартовым скриптом.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>Александр · Python, FastAPI, JavaScript, AI-интеграции</span>
+      <span>Портфолио для демонстрации рабочих проектов</span>
+    </div>
+  </footer>
+
+  <script src="assets/links.js"></script>
+  <script>
+    (function () {
+      var links = window.PORTFOLIO_LINKS || {};
+      if (links.sverkai) {
+        document.querySelectorAll(".js-sverkai-link").forEach(function (node) {
+          node.href = links.sverkai;
+        });
+      }
+      if (links.vkBeatDistributor) {
+        document.querySelectorAll(".js-vk-link").forEach(function (node) {
+          node.href = links.vkBeatDistributor;
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
