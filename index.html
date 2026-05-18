@@ -76,17 +76,13 @@
       aspect-ratio: 420 / 660;
       z-index: 2;
       opacity: 1;
-      filter:
-        drop-shadow(0 0 22px rgba(255, 255, 255, .22))
-        drop-shadow(0 28px 54px rgba(0, 0, 0, .48));
+      filter: drop-shadow(0 28px 54px rgba(0, 0, 0, .48));
       transition: opacity .22s ease, filter .22s ease;
     }
 
     .lamp-scene.is-on .lamp-rig {
       opacity: 1;
-      filter:
-        drop-shadow(0 0 22px rgba(255, 255, 255, .22))
-        drop-shadow(0 28px 54px rgba(0, 0, 0, .48));
+      filter: drop-shadow(0 28px 54px rgba(0, 0, 0, .48));
     }
 
     .lamp-body,
@@ -109,13 +105,12 @@
       height: auto;
       transform: rotate(var(--lamp-head-angle, -16deg));
       transform-origin: 14.8% 49.4%;
-      filter: drop-shadow(0 0 18px rgba(255, 249, 196, .36));
       transition: transform .22s cubic-bezier(.2, .8, .2, 1), filter .18s ease;
       will-change: transform;
     }
 
     .lamp-scene.is-on .lamp-head {
-      filter: drop-shadow(0 0 18px rgba(255, 249, 196, .36));
+      filter: none;
     }
 
     .lamp-fill {
