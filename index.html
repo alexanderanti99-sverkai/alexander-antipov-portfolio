@@ -41,6 +41,7 @@
         radial-gradient(circle at 84% 28%, rgba(59, 130, 246, .12), transparent 28%),
         var(--bg);
       letter-spacing: 0;
+      overflow-x: hidden;
     }
 
     a {
@@ -59,12 +60,61 @@
       background: var(--accent);
     }
 
+    .lamp-scene {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .desk-lamp {
+      position: fixed;
+      left: clamp(10px, 3.4vw, 54px);
+      top: clamp(250px, 30vh, 330px);
+      width: clamp(190px, 21vw, 285px);
+      height: auto;
+      opacity: .2;
+      filter: drop-shadow(0 24px 42px rgba(0, 0, 0, .38));
+      transition: opacity .22s ease, filter .22s ease;
+    }
+
+    .lamp-scene.is-on .desk-lamp {
+      opacity: .96;
+      filter:
+        drop-shadow(0 0 22px rgba(255, 255, 255, .2))
+        drop-shadow(0 28px 54px rgba(0, 0, 0, .48));
+    }
+
+    .lamp-beam {
+      position: fixed;
+      left: var(--beam-left, 290px);
+      top: var(--beam-top, 240px);
+      width: var(--beam-width, 760px);
+      height: var(--beam-height, 320px);
+      transform: translateY(-50%) rotate(var(--beam-angle, 0deg));
+      transform-origin: 0 50%;
+      clip-path: polygon(0 46%, 100% 0, 100% 100%, 0 54%);
+      opacity: 0;
+      background:
+        linear-gradient(90deg, rgba(255, 252, 226, .92), rgba(255, 255, 245, .68) 54%, rgba(255, 246, 180, .08) 100%);
+      mix-blend-mode: screen;
+      filter: blur(.2px);
+      transition: opacity .18s ease, width .14s ease, height .14s ease, transform .14s ease, top .14s ease, left .14s ease;
+    }
+
+    .lamp-scene.is-on .lamp-beam {
+      opacity: .9;
+    }
+
     .shell {
       width: min(1180px, calc(100% - 40px));
       margin: 0 auto;
       display: grid;
       grid-template-columns: minmax(300px, 440px) minmax(0, 1fr);
       gap: clamp(36px, 8vw, 96px);
+      position: relative;
+      z-index: 2;
     }
 
     .sidebar {
@@ -260,7 +310,8 @@
       margin-right: -20px;
       border-radius: var(--radius);
       border: 1px solid transparent;
-      transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+      isolation: isolate;
+      transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease, color .18s ease;
     }
 
     .timeline-item:hover,
@@ -269,6 +320,46 @@
       border-color: var(--line);
       box-shadow: var(--shadow);
       transform: translateY(-2px);
+    }
+
+    .timeline-item.is-lit,
+    .project.is-lit,
+    .skill-block.is-lit {
+      background: rgba(248, 250, 252, .97);
+      border-color: rgba(255, 255, 255, .8);
+      box-shadow: 0 26px 90px rgba(255, 255, 225, .18), 0 24px 70px rgba(2, 6, 23, .45);
+      transform: translateY(-2px);
+    }
+
+    .timeline-item.is-lit .period,
+    .project.is-lit .period {
+      color: #64748b;
+    }
+
+    .timeline-item.is-lit .item-title,
+    .timeline-item.is-lit .item-title a,
+    .project.is-lit .item-title,
+    .project.is-lit .item-title a,
+    .skill-block.is-lit h3 {
+      color: #0f172a;
+    }
+
+    .timeline-item.is-lit .item-subtitle,
+    .timeline-item.is-lit .item-text,
+    .project.is-lit .item-subtitle,
+    .project.is-lit .item-text,
+    .skill-block.is-lit p {
+      color: #334155;
+    }
+
+    .project.is-lit h3 a::after {
+      color: #0f766e;
+    }
+
+    .timeline-item.is-lit .tags li,
+    .project.is-lit .tags li {
+      color: #0f766e;
+      background: rgba(15, 118, 110, .12);
     }
 
     .period {
@@ -383,6 +474,8 @@
       border-radius: var(--radius);
       border: 1px solid var(--line);
       background: rgba(15, 23, 42, .26);
+      isolation: isolate;
+      transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
     }
 
     .skill-block h3 {
@@ -441,6 +534,10 @@
         position: static;
         min-height: auto;
         padding: 56px 0 40px;
+      }
+
+      .lamp-scene {
+        display: none;
       }
 
       .nav {
@@ -510,6 +607,16 @@
   </style>
 </head>
 <body>
+  <div class="lamp-scene" aria-hidden="true">
+    <div class="lamp-beam"></div>
+    <svg class="desk-lamp" viewBox="0 0 320 440" role="img" aria-label="">
+      <path fill="#f8fafc" d="M62 380c21-31 125-43 177-13l-6 47c-53 23-151 20-203-7l12-27Z"/>
+      <path fill="none" stroke="#f8fafc" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" d="M91 358c-20-106-13-219 77-281"/>
+      <path fill="none" stroke="#f8fafc" stroke-width="31" stroke-linecap="round" stroke-linejoin="round" d="M168 77c34-27 75-34 119-20"/>
+      <path fill="#f8fafc" d="M184 58 307 52l-57 171-62-59-34-39 30-67Z"/>
+      <path fill="#d9e1ea" opacity=".55" d="M249 222 188 164l-34-39 23-51 36 71 58 35-22 42Z"/>
+    </svg>
+  </div>
   <div class="shell">
     <header class="sidebar">
       <div>
@@ -677,6 +784,78 @@
           node.href = links.vkBeatDistributor;
         });
       }
+
+      var lampScene = document.querySelector(".lamp-scene");
+      var lamp = document.querySelector(".desk-lamp");
+      var beam = document.querySelector(".lamp-beam");
+      var activeTarget = null;
+      var desktopQuery = window.matchMedia("(min-width: 961px)");
+      var lightTargets = Array.prototype.slice.call(document.querySelectorAll(".timeline-item, .project, .skill-block"));
+
+      function clearLight() {
+        if (activeTarget) {
+          activeTarget.classList.remove("is-lit");
+        }
+        activeTarget = null;
+        if (lampScene) {
+          lampScene.classList.remove("is-on");
+        }
+      }
+
+      function moveLight(target) {
+        if (!desktopQuery.matches || !lamp || !beam || !lampScene) {
+          return;
+        }
+
+        var lampRect = lamp.getBoundingClientRect();
+        var targetRect = target.getBoundingClientRect();
+        var lampX = lampRect.left + lampRect.width * 0.77;
+        var lampY = lampRect.top + lampRect.height * 0.49;
+        var targetX = targetRect.left + targetRect.width * 0.48;
+        var targetY = targetRect.top + targetRect.height * 0.5;
+        var dx = targetX - lampX;
+        var dy = targetY - lampY;
+        var distance = Math.sqrt(dx * dx + dy * dy);
+        var angle = Math.atan2(dy, dx) * 180 / Math.PI;
+
+        beam.style.setProperty("--beam-left", lampX + "px");
+        beam.style.setProperty("--beam-top", lampY + "px");
+        beam.style.setProperty("--beam-width", Math.max(distance + targetRect.width * 0.68, 520) + "px");
+        beam.style.setProperty("--beam-height", Math.max(targetRect.height + 150, 260) + "px");
+        beam.style.setProperty("--beam-angle", angle + "deg");
+
+        if (activeTarget && activeTarget !== target) {
+          activeTarget.classList.remove("is-lit");
+        }
+        activeTarget = target;
+        activeTarget.classList.add("is-lit");
+        lampScene.classList.add("is-on");
+      }
+
+      lightTargets.forEach(function (target) {
+        target.addEventListener("mouseenter", function () {
+          moveLight(target);
+        });
+        target.addEventListener("focusin", function () {
+          moveLight(target);
+        });
+        target.addEventListener("mouseleave", clearLight);
+        target.addEventListener("focusout", clearLight);
+      });
+
+      window.addEventListener("scroll", function () {
+        if (activeTarget) {
+          moveLight(activeTarget);
+        }
+      }, { passive: true });
+
+      window.addEventListener("resize", function () {
+        if (!desktopQuery.matches) {
+          clearLight();
+        } else if (activeTarget) {
+          moveLight(activeTarget);
+        }
+      });
     })();
   </script>
 </body>
