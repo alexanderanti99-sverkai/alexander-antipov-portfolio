@@ -70,9 +70,9 @@
 
     .lamp-rig {
       position: fixed;
-      right: clamp(18px, 4vw, 70px);
-      top: clamp(34px, 5vh, 62px);
-      width: clamp(370px, 31vw, 560px);
+      left: clamp(10px, 2vw, 34px);
+      top: clamp(74px, 9vh, 118px);
+      width: clamp(460px, 30vw, 620px);
       aspect-ratio: 921 / 1508;
       z-index: 2;
       opacity: 1;
@@ -84,58 +84,71 @@
       opacity: 1;
     }
 
-    .lamp-image {
+    .lamp-body-image,
+    .lamp-head-image {
       position: absolute;
-      inset: 0;
       display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .lamp-body-image {
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: contain;
       object-position: center bottom;
-      transform: scaleX(-1);
-      transform-origin: center;
-      filter: none;
+    }
+
+    .lamp-head-image {
+      position: absolute;
+      left: 28.23%;
+      top: 0;
+      width: 71.77%;
+      height: auto;
+      transform: rotate(var(--lamp-head-angle, 0deg));
+      transform-origin: 12.1% 67.4%;
+      transition: transform .2s cubic-bezier(.2, .8, .2, 1);
+      will-change: transform;
     }
 
     .lamp-head-pivot {
       position: absolute;
-      left: 10.8%;
-      top: 15.8%;
+      left: 36.92%;
+      top: 19.23%;
       width: 1px;
       height: 1px;
     }
 
-    .lamp-beam {
+    .lamp-beam-svg {
       position: fixed;
-      left: var(--beam-left, 290px);
-      top: var(--beam-top, 240px);
-      width: var(--beam-width, 760px);
-      height: var(--beam-height, 320px);
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: 1;
-      transform: translateY(-50%) rotate(var(--beam-angle, 0deg));
-      transform-origin: 0 50%;
-      clip-path: polygon(0 46%, 100% 0, 100% 100%, 0 54%);
       opacity: 0;
-      background:
-        linear-gradient(90deg, rgba(255, 252, 226, .92), rgba(255, 255, 245, .68) 54%, rgba(255, 246, 180, .08) 100%);
       mix-blend-mode: screen;
-      filter: blur(.2px);
-      transition: opacity .18s ease, width .14s ease, height .14s ease, transform .14s ease, top .14s ease, left .14s ease;
+      transition: opacity .18s ease;
     }
 
-    .lamp-scene.is-on .lamp-beam {
-      opacity: .9;
+    .lamp-beam-shape {
+      fill: rgba(255, 252, 226, .48);
+      filter: blur(.35px);
+    }
+
+    .lamp-scene.is-on .lamp-beam-svg {
+      opacity: .78;
     }
 
     .shell {
-      --lamp-space: clamp(430px, 35vw, 660px);
-      width: min(1180px, calc(100% - var(--lamp-space) - 72px));
-      margin: 0 var(--lamp-space) 0 clamp(38px, 5vw, 84px);
+      --lamp-space: clamp(530px, 37vw, 760px);
+      width: min(1180px, calc(100% - var(--lamp-space) - 42px));
+      margin: 0 42px 0 var(--lamp-space);
       display: grid;
-      grid-template-columns: minmax(270px, 380px) minmax(0, 1fr);
-      gap: clamp(34px, 4vw, 76px);
+      grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+      gap: clamp(36px, 5vw, 84px);
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     .sidebar {
@@ -625,9 +638,12 @@
 </head>
 <body>
   <div class="lamp-scene" aria-hidden="true">
-    <div class="lamp-beam"></div>
+    <svg class="lamp-beam-svg">
+      <polygon class="lamp-beam-shape" points=""></polygon>
+    </svg>
     <div class="lamp-rig">
-      <img class="lamp-image" src="assets/lamp-cutout.png" alt="">
+      <img class="lamp-body-image" src="assets/lamp-body.png" alt="">
+      <img class="lamp-head-image" src="assets/lamp-head.png" alt="">
       <span class="lamp-head-pivot"></span>
     </div>
   </div>
@@ -797,11 +813,13 @@
       }
 
       var lampScene = document.querySelector(".lamp-scene");
+      var lampHead = document.querySelector(".lamp-head-image");
       var lampPivot = document.querySelector(".lamp-head-pivot");
-      var beam = document.querySelector(".lamp-beam");
+      var beam = document.querySelector(".lamp-beam-shape");
       var activeTarget = null;
       var desktopQuery = window.matchMedia("(min-width: 961px)");
       var lightTargets = Array.prototype.slice.call(document.querySelectorAll(".timeline-item, .project, .skill-block"));
+      var defaultHeadAngle = Math.atan2(-125, 540) * 180 / Math.PI;
 
       function clearLight() {
         if (activeTarget) {
@@ -811,31 +829,18 @@
         if (lampScene) {
           lampScene.classList.remove("is-on");
         }
+        if (lampHead) {
+          lampHead.style.removeProperty("--lamp-head-angle");
+        }
+        if (beam) {
+          beam.setAttribute("points", "");
+        }
       }
 
       function moveLight(target) {
-        if (!desktopQuery.matches || !lampPivot || !beam || !lampScene) {
+        if (!desktopQuery.matches || !lampHead || !lampPivot || !beam || !lampScene) {
           return;
         }
-
-        var pivotRect = lampPivot.getBoundingClientRect();
-        var targetRect = target.getBoundingClientRect();
-        var pivotX = pivotRect.left + pivotRect.width / 2;
-        var pivotY = pivotRect.top + pivotRect.height / 2;
-        var targetX = targetRect.left + targetRect.width * 0.48;
-        var targetY = targetRect.top + targetRect.height * 0.5;
-        var lampX = pivotX;
-        var lampY = pivotY;
-        var dx = targetX - lampX;
-        var dy = targetY - lampY;
-        var distance = Math.sqrt(dx * dx + dy * dy);
-        var beamAngle = Math.atan2(dy, dx) * 180 / Math.PI;
-
-        beam.style.setProperty("--beam-left", lampX + "px");
-        beam.style.setProperty("--beam-top", lampY + "px");
-        beam.style.setProperty("--beam-width", Math.max(distance + targetRect.width * 0.68, 520) + "px");
-        beam.style.setProperty("--beam-height", Math.max(targetRect.height + 150, 260) + "px");
-        beam.style.setProperty("--beam-angle", beamAngle + "deg");
 
         if (activeTarget && activeTarget !== target) {
           activeTarget.classList.remove("is-lit");
@@ -843,6 +848,49 @@
         activeTarget = target;
         activeTarget.classList.add("is-lit");
         lampScene.classList.add("is-on");
+
+        var pivotRect = lampPivot.getBoundingClientRect();
+        var targetRect = target.getBoundingClientRect();
+        var pivotX = pivotRect.left + pivotRect.width / 2;
+        var pivotY = pivotRect.top + pivotRect.height / 2;
+        var targetX = targetRect.left + targetRect.width * 0.5;
+        var targetY = targetRect.top + targetRect.height * 0.5;
+        var targetAngleRad = Math.atan2(targetY - pivotY, targetX - pivotX);
+        var targetAngle = targetAngleRad * 180 / Math.PI;
+        var headDelta = targetAngle - defaultHeadAngle;
+        var scale = lampPivot.parentElement.getBoundingClientRect().width / 921;
+        var mouthVectorX = 540 * scale;
+        var mouthVectorY = -125 * scale;
+        var cos = Math.cos(headDelta * Math.PI / 180);
+        var sin = Math.sin(headDelta * Math.PI / 180);
+        var mouthX = pivotX + mouthVectorX * cos - mouthVectorY * sin;
+        var mouthY = pivotY + mouthVectorX * sin + mouthVectorY * cos;
+        var dx = targetX - mouthX;
+        var dy = targetY - mouthY;
+        var distance = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+        var normalX = -dy / distance;
+        var normalY = dx / distance;
+        var aperture = Math.max(10, 20 * scale);
+        var inset = 2;
+        var left = targetRect.left + inset;
+        var right = targetRect.right - inset;
+        var top = targetRect.top + inset;
+        var bottom = targetRect.bottom - inset;
+        var points = [
+          [mouthX + normalX * aperture, mouthY + normalY * aperture],
+          [left, top],
+          [right, top],
+          [right, bottom],
+          [left, bottom],
+          [mouthX - normalX * aperture, mouthY - normalY * aperture]
+        ].map(function (point) {
+          return point.map(function (value) {
+            return Math.round(value * 10) / 10;
+          }).join(",");
+        }).join(" ");
+
+        lampHead.style.setProperty("--lamp-head-angle", headDelta + "deg");
+        beam.setAttribute("points", points);
       }
 
       lightTargets.forEach(function (target) {
