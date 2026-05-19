@@ -73,7 +73,7 @@
       left: clamp(10px, 2vw, 34px);
       top: clamp(74px, 9vh, 118px);
       width: clamp(460px, 30vw, 620px);
-      aspect-ratio: 921 / 1508;
+      aspect-ratio: 993 / 1584;
       z-index: 2;
       opacity: 1;
       filter: drop-shadow(0 28px 54px rgba(0, 0, 0, .44));
@@ -84,40 +84,32 @@
       opacity: 1;
     }
 
-    .lamp-body-image,
-    .lamp-head-image {
+    .lamp-svg {
       position: absolute;
+      inset: 0;
       display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
       pointer-events: none;
       user-select: none;
     }
 
-    .lamp-body-image {
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center bottom;
-    }
-
-    .lamp-head-image {
-      position: absolute;
-      left: 28.23%;
-      top: 0;
-      width: 71.77%;
-      height: auto;
-      transform: rotate(var(--lamp-head-angle, 0deg));
-      transform-origin: 12.1% 67.4%;
-      transition: transform .2s cubic-bezier(.2, .8, .2, 1);
-      will-change: transform;
-    }
-
     .lamp-head-pivot {
       position: absolute;
-      left: 36.92%;
-      top: 19.23%;
+      left: 49.04%;
+      top: 19.07%;
       width: 1px;
       height: 1px;
+    }
+
+    .lamp-svg .glow {
+      filter: none;
+    }
+
+    .lamp-svg-shade {
+      transition: transform .2s cubic-bezier(.2, .8, .2, 1);
+      will-change: transform;
     }
 
     .lamp-beam-svg {
@@ -132,12 +124,12 @@
     }
 
     .lamp-beam-shape {
-      fill: rgba(255, 252, 226, .48);
-      filter: blur(.35px);
+      fill: url(#lampBeamGradient);
+      filter: blur(.3px);
     }
 
     .lamp-scene.is-on .lamp-beam-svg {
-      opacity: .78;
+      opacity: .82;
     }
 
     .shell {
@@ -639,11 +631,70 @@
 <body>
   <div class="lamp-scene" aria-hidden="true">
     <svg class="lamp-beam-svg">
+      <defs>
+        <linearGradient id="lampBeamGradient" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#fff9d8" stop-opacity=".54"/>
+          <stop offset="62%" stop-color="#fffdea" stop-opacity=".42"/>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity=".30"/>
+        </linearGradient>
+      </defs>
       <polygon class="lamp-beam-shape" points=""></polygon>
     </svg>
     <div class="lamp-rig">
-      <img class="lamp-body-image" src="assets/lamp-body.png" alt="">
-      <img class="lamp-head-image" src="assets/lamp-head.png" alt="">
+      <svg class="lamp-svg" viewBox="0 0 993 1584" role="img" aria-label="">
+        <defs>
+          <linearGradient id="portfolioBaseSide" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f9f9f5"/>
+            <stop offset="1" stop-color="#e5e5df"/>
+          </linearGradient>
+          <radialGradient id="portfolioBaseTop" cx="46%" cy="36%" r="72%">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#f3f3ee"/>
+          </radialGradient>
+          <linearGradient id="portfolioHeadGrad" x1="458" y1="200" x2="922" y2="350">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset=".7" stop-color="#fafaf7"/>
+            <stop offset="1" stop-color="#efefea"/>
+          </linearGradient>
+        </defs>
+
+        <g id="portfolioLampBase" class="glow">
+          <path d="M45 1378
+                   C52 1322 140 1300 355 1300
+                   C590 1300 675 1325 683 1377
+                   L683 1436
+                   C680 1482 582 1510 356 1510
+                   C150 1510 48 1482 45 1436 Z"
+                fill="url(#portfolioBaseSide)"/>
+          <ellipse cx="364" cy="1377" rx="319" ry="78" fill="url(#portfolioBaseTop)"/>
+        </g>
+
+        <g id="portfolioLampArm" class="glow">
+          <path d="M128 1325
+                   C92 1115 91 872 156 690
+                   C211 536 317 414 452 333"
+                fill="none" stroke="#fbfbf7" stroke-width="95" stroke-linecap="round"/>
+          <path d="M156 1310
+                   C126 1110 127 879 183 704
+                   C231 555 326 445 455 361"
+                fill="none" stroke="#c7c7c0" stroke-width="22" stroke-linecap="round" opacity=".30"/>
+        </g>
+
+        <g id="portfolioLampShade" class="lamp-svg-shade glow" transform="rotate(-6 487 302)">
+          <circle cx="487" cy="302" r="72" fill="#fbfbf7"/>
+          <path d="M454 218
+                   L893 86
+                   L922 356
+                   L582 412
+                   L542 360
+                   L468 355
+                   L456 287 Z"
+                fill="url(#portfolioHeadGrad)"/>
+          <path d="M582 412 L922 356 L862 298 L626 318 Z" fill="#ddddda" opacity=".34"/>
+          <path d="M454 218 L893 86 L922 356" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="2"/>
+          <path d="M542 360 L582 412 L626 318 Z" fill="#e8e8e3" opacity=".42"/>
+        </g>
+      </svg>
       <span class="lamp-head-pivot"></span>
     </div>
   </div>
@@ -813,13 +864,42 @@
       }
 
       var lampScene = document.querySelector(".lamp-scene");
-      var lampHead = document.querySelector(".lamp-head-image");
+      var lampRig = document.querySelector(".lamp-rig");
+      var lampShade = document.getElementById("portfolioLampShade");
       var lampPivot = document.querySelector(".lamp-head-pivot");
       var beam = document.querySelector(".lamp-beam-shape");
+      var beamGradient = document.getElementById("lampBeamGradient");
       var activeTarget = null;
       var desktopQuery = window.matchMedia("(min-width: 961px)");
       var lightTargets = Array.prototype.slice.call(document.querySelectorAll(".timeline-item, .project, .skill-block"));
-      var defaultHeadAngle = Math.atan2(-125, 540) * 180 / Math.PI;
+      var viewBoxWidth = 993;
+      var viewBoxHeight = 1584;
+      var hinge = { x: 487, y: 302 };
+      var shadeApertureTop = { x: 893, y: 86 };
+      var shadeApertureBottom = { x: 922, y: 356 };
+      var apertureCenter = {
+        x: (shadeApertureTop.x + shadeApertureBottom.x) / 2,
+        y: (shadeApertureTop.y + shadeApertureBottom.y) / 2
+      };
+      var apertureAxisLength = Math.sqrt(
+        Math.pow(shadeApertureBottom.x - shadeApertureTop.x, 2) +
+        Math.pow(shadeApertureBottom.y - shadeApertureTop.y, 2)
+      );
+      var apertureAxis = {
+        x: (shadeApertureBottom.x - shadeApertureTop.x) / apertureAxisLength,
+        y: (shadeApertureBottom.y - shadeApertureTop.y) / apertureAxisLength
+      };
+      var beamSourceHalfLength = 42;
+      var beamSourceTop = {
+        x: apertureCenter.x - apertureAxis.x * beamSourceHalfLength,
+        y: apertureCenter.y - apertureAxis.y * beamSourceHalfLength
+      };
+      var beamSourceBottom = {
+        x: apertureCenter.x + apertureAxis.x * beamSourceHalfLength,
+        y: apertureCenter.y + apertureAxis.y * beamSourceHalfLength
+      };
+      var defaultShadeAngle = -6;
+      var apertureDirection = Math.atan2(apertureCenter.y - hinge.y, apertureCenter.x - hinge.x) * 180 / Math.PI;
 
       function clearLight() {
         if (activeTarget) {
@@ -829,16 +909,64 @@
         if (lampScene) {
           lampScene.classList.remove("is-on");
         }
-        if (lampHead) {
-          lampHead.style.removeProperty("--lamp-head-angle");
+        if (lampShade) {
+          lampShade.setAttribute("transform", "rotate(" + defaultShadeAngle + " " + hinge.x + " " + hinge.y + ")");
         }
         if (beam) {
           beam.setAttribute("points", "");
         }
       }
 
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function rotateSvgPoint(point, angleDeg) {
+        var angleRad = angleDeg * Math.PI / 180;
+        var cos = Math.cos(angleRad);
+        var sin = Math.sin(angleRad);
+        var dx = point.x - hinge.x;
+        var dy = point.y - hinge.y;
+        return {
+          x: hinge.x + dx * cos - dy * sin,
+          y: hinge.y + dx * sin + dy * cos
+        };
+      }
+
+      function svgPointToViewport(point, rigRect) {
+        return {
+          x: rigRect.left + point.x / viewBoxWidth * rigRect.width,
+          y: rigRect.top + point.y / viewBoxHeight * rigRect.height
+        };
+      }
+
+      function cross(origin, a, b) {
+        return (a.x - origin.x) * (b.y - origin.y) - (a.y - origin.y) * (b.x - origin.x);
+      }
+
+      function convexHull(points) {
+        var sorted = points.slice().sort(function (a, b) {
+          return a.x === b.x ? a.y - b.y : a.x - b.x;
+        });
+        var lower = [];
+        sorted.forEach(function (point) {
+          while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], point) <= 0) {
+            lower.pop();
+          }
+          lower.push(point);
+        });
+        var upper = [];
+        sorted.slice().reverse().forEach(function (point) {
+          while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], point) <= 0) {
+            upper.pop();
+          }
+          upper.push(point);
+        });
+        return lower.slice(0, -1).concat(upper.slice(0, -1));
+      }
+
       function moveLight(target) {
-        if (!desktopQuery.matches || !lampHead || !lampPivot || !beam || !lampScene) {
+        if (!desktopQuery.matches || !lampRig || !lampShade || !lampPivot || !beam || !lampScene) {
           return;
         }
 
@@ -849,47 +977,41 @@
         activeTarget.classList.add("is-lit");
         lampScene.classList.add("is-on");
 
+        var rigRect = lampRig.getBoundingClientRect();
         var pivotRect = lampPivot.getBoundingClientRect();
         var targetRect = target.getBoundingClientRect();
         var pivotX = pivotRect.left + pivotRect.width / 2;
         var pivotY = pivotRect.top + pivotRect.height / 2;
         var targetX = targetRect.left + targetRect.width * 0.5;
         var targetY = targetRect.top + targetRect.height * 0.5;
-        var targetAngleRad = Math.atan2(targetY - pivotY, targetX - pivotX);
-        var targetAngle = targetAngleRad * 180 / Math.PI;
-        var headDelta = targetAngle - defaultHeadAngle;
-        var scale = lampPivot.parentElement.getBoundingClientRect().width / 921;
-        var mouthVectorX = 540 * scale;
-        var mouthVectorY = -125 * scale;
-        var cos = Math.cos(headDelta * Math.PI / 180);
-        var sin = Math.sin(headDelta * Math.PI / 180);
-        var mouthX = pivotX + mouthVectorX * cos - mouthVectorY * sin;
-        var mouthY = pivotY + mouthVectorX * sin + mouthVectorY * cos;
-        var dx = targetX - mouthX;
-        var dy = targetY - mouthY;
-        var distance = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
-        var normalX = -dy / distance;
-        var normalY = dx / distance;
-        var aperture = Math.max(10, 20 * scale);
-        var inset = 2;
-        var left = targetRect.left + inset;
-        var right = targetRect.right - inset;
-        var top = targetRect.top + inset;
-        var bottom = targetRect.bottom - inset;
-        var points = [
-          [mouthX + normalX * aperture, mouthY + normalY * aperture],
-          [left, top],
-          [right, top],
-          [right, bottom],
-          [left, bottom],
-          [mouthX - normalX * aperture, mouthY - normalY * aperture]
-        ].map(function (point) {
-          return point.map(function (value) {
+        var targetAngle = Math.atan2(targetY - pivotY, targetX - pivotX) * 180 / Math.PI;
+        var shadeAngle = clamp(targetAngle - apertureDirection, -34, 36);
+        var sourceTop = svgPointToViewport(rotateSvgPoint(beamSourceTop, shadeAngle), rigRect);
+        var sourceBottom = svgPointToViewport(rotateSvgPoint(beamSourceBottom, shadeAngle), rigRect);
+        var sourceCenter = {
+          x: (sourceTop.x + sourceBottom.x) / 2,
+          y: (sourceTop.y + sourceBottom.y) / 2
+        };
+        var targetPoints = [
+          { x: targetRect.left, y: targetRect.top },
+          { x: targetRect.right, y: targetRect.top },
+          { x: targetRect.right, y: targetRect.bottom },
+          { x: targetRect.left, y: targetRect.bottom }
+        ];
+        var hull = convexHull([sourceTop, sourceBottom].concat(targetPoints));
+        var points = hull.map(function (point) {
+          return [point.x, point.y].map(function (value) {
             return Math.round(value * 10) / 10;
           }).join(",");
         }).join(" ");
 
-        lampHead.style.setProperty("--lamp-head-angle", headDelta + "deg");
+        lampShade.setAttribute("transform", "rotate(" + shadeAngle + " " + hinge.x + " " + hinge.y + ")");
+        if (beamGradient) {
+          beamGradient.setAttribute("x1", sourceCenter.x);
+          beamGradient.setAttribute("y1", sourceCenter.y);
+          beamGradient.setAttribute("x2", targetX);
+          beamGradient.setAttribute("y2", targetY);
+        }
         beam.setAttribute("points", points);
       }
 

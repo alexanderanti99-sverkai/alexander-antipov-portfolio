@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="interactive-lamp" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 993 1584" width="993" height="1584">
+  <title>Interactive minimalist desk lamp</title>
+  <desc>Interactive SVG lamp with a draggable shade.</desc>
+
+  <style>
+    :root {
+      --bg-dark:#06111d;
+      --bg-mid:#0b2235;
+      --bg-light:#14314a;
+
+      --lamp:#fbfbf7;
+      --lamp-mid:#f2f2ee;
+      --lamp-shadow:#d8d8d2;
+      --lamp-edge:#ecece6;
+
+    }
+
+    .glow { filter:url(#softGlow); }
+    .shade-part { cursor:grab; }
+    .shade-part:active { cursor:grabbing; }
+  </style>
+
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="46%" r="82%">
+      <stop offset="0%" stop-color="#14324b"/>
+      <stop offset="50%" stop-color="#0b2235"/>
+      <stop offset="100%" stop-color="#05111c"/>
+    </radialGradient>
+
+    <pattern id="texture" width="72" height="72" patternUnits="userSpaceOnUse">
+      <rect width="72" height="72" fill="transparent"/>
+      <circle cx="8" cy="16" r="1.2" fill="#ffffff" opacity=".018"/>
+      <circle cx="33" cy="26" r="1.0" fill="#ffffff" opacity=".014"/>
+      <circle cx="58" cy="54" r="1.4" fill="#000000" opacity=".02"/>
+      <path d="M0 37 C14 31,27 44,40 37 S60 31,72 37" stroke="#fff" opacity=".012" fill="none"/>
+    </pattern>
+
+    <linearGradient id="baseSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f9f9f5"/>
+      <stop offset="1" stop-color="#e5e5df"/>
+    </linearGradient>
+
+    <radialGradient id="baseTop" cx="46%" cy="36%" r="72%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f3f3ee"/>
+    </radialGradient>
+
+    <linearGradient id="armGrad" x1="80" y1="1150" x2="470" y2="300">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".58" stop-color="#f7f7f3"/>
+      <stop offset="1" stop-color="#ecece6"/>
+    </linearGradient>
+
+    <linearGradient id="headGrad" x1="458" y1="200" x2="922" y2="350">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".7" stop-color="#fafaf7"/>
+      <stop offset="1" stop-color="#efefea"/>
+    </linearGradient>
+
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="11" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="
+        1 0 0 0 1
+        0 1 0 0 1
+        0 0 1 0 1
+        0 0 0 .42 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+  </defs>
+
+  <rect width="993" height="1584" fill="url(#bg)"/>
+  <rect width="993" height="1584" fill="url(#texture)" opacity=".85"/>
+
+  <!-- Lamp base -->
+  <g id="base" class="glow">
+    <path d="M45 1378
+             C52 1322 140 1300 355 1300
+             C590 1300 675 1325 683 1377
+             L683 1436
+             C680 1482 582 1510 356 1510
+             C150 1510 48 1482 45 1436 Z"
+          fill="url(#baseSide)"/>
+    <ellipse cx="364" cy="1377" rx="319" ry="78" fill="url(#baseTop)"/>
+  </g>
+
+  <!-- Arm -->
+  <g id="arm" class="glow">
+    <path d="M128 1325
+             C92 1115 91 872 156 690
+             C211 536 317 414 452 333"
+          fill="none" stroke="var(--lamp)" stroke-width="95" stroke-linecap="round"/>
+    <path d="M156 1310
+             C126 1110 127 879 183 704
+             C231 555 326 445 455 361"
+          fill="none" stroke="#c7c7c0" stroke-width="22" stroke-linecap="round" opacity=".30"/>
+  </g>
+
+  <!-- Movable shade; resized to better match the reference image -->
+  <g id="shadeAssembly" class="shade-part glow" transform="rotate(-6 487 302)">
+    <circle cx="487" cy="302" r="72" fill="#fbfbf7"/>
+    <path d="M454 218
+             L893 86
+             L922 356
+             L582 412
+             L542 360
+             L468 355
+             L456 287 Z"
+          fill="url(#headGrad)"/>
+    <path d="M582 412 L922 356 L862 298 L626 318 Z" fill="#ddddda" opacity=".34"/>
+    <path d="M454 218 L893 86 L922 356" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="2"/>
+    <path d="M542 360 L582 412 L626 318 Z" fill="#e8e8e3" opacity=".42"/>
+  </g>
+
+  <script><![CDATA[
+    (function () {
+      const svg = document.getElementById('interactive-lamp');
+      const shade = document.getElementById('shadeAssembly');
+
+      const hingeX = 487;
+      const hingeY = 302;
+
+      let dragging = false;
+      let currentAngle = -6;
+      let offset = 0;
+
+      function clientToSvg(evt) {
+        const pt = svg.createSVGPoint();
+        pt.x = evt.clientX;
+        pt.y = evt.clientY;
+        return pt.matrixTransform(svg.getScreenCTM().inverse());
+      }
+
+      function pointerAngle(evt) {
+        const p = clientToSvg(evt);
+        return Math.atan2(p.y - hingeY, p.x - hingeX) * 180 / Math.PI;
+      }
+
+      function applyShadeRotation() {
+        shade.setAttribute('transform', `rotate(${currentAngle} ${hingeX} ${hingeY})`);
+      }
+
+      shade.addEventListener('pointerdown', (evt) => {
+        dragging = true;
+        shade.setPointerCapture(evt.pointerId);
+        offset = currentAngle - pointerAngle(evt);
+        evt.preventDefault();
+      });
+
+      shade.addEventListener('pointermove', (evt) => {
+        if (!dragging) return;
+        currentAngle = pointerAngle(evt) + offset;
+        currentAngle = Math.max(-36, Math.min(30, currentAngle));
+        applyShadeRotation();
+      });
+
+      function endDrag(evt) {
+        dragging = false;
+        try { shade.releasePointerCapture(evt.pointerId); } catch (e) {}
+      }
+
+      shade.addEventListener('pointerup', endDrag);
+      shade.addEventListener('pointercancel', endDrag);
+      shade.addEventListener('pointerleave', (evt) => {
+        if (dragging && evt.buttons === 0) endDrag(evt);
+      });
+
+      applyShadeRotation();
+    })();
+  ]]></script>
+</svg>
