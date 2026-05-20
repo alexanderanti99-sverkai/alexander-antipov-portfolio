@@ -21,6 +21,10 @@
       --white: #f8fafc;
       --shadow: 0 24px 80px rgba(2, 6, 23, .42);
       --radius: 8px;
+      --lamp-top: clamp(18px, 3vh, 34px);
+      --sidebar-top: 54px;
+      --main-top: 64px;
+      --section-gap: 116px;
     }
 
     * {
@@ -71,7 +75,7 @@
     .lamp-rig {
       position: fixed;
       left: clamp(10px, 2vw, 34px);
-      top: 0;
+      top: var(--lamp-top);
       width: clamp(520px, 30vw, 640px);
       aspect-ratio: 993 / 1584;
       z-index: 2;
@@ -150,7 +154,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 48px 0 64px;
+      padding: var(--sidebar-top) 0 64px;
     }
 
     .intro h1 {
@@ -293,11 +297,11 @@
     }
 
     main {
-      padding: 52px 0 96px;
+      padding: var(--main-top) 0 96px;
     }
 
     .section {
-      padding-bottom: 116px;
+      padding-bottom: var(--section-gap);
       scroll-margin-top: 80px;
     }
 
@@ -555,6 +559,55 @@
     .resume-link:hover {
       color: var(--accent);
       border-color: var(--accent);
+    }
+
+    .layout-tuner {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      width: min(320px, calc(100vw - 36px));
+      padding: 14px;
+      border: 1px solid rgba(148, 163, 184, .28);
+      border-radius: 10px;
+      background: rgba(15, 23, 42, .92);
+      box-shadow: 0 24px 70px rgba(2, 6, 23, .46);
+      color: var(--text);
+      font-size: 12px;
+      pointer-events: auto;
+      backdrop-filter: blur(18px);
+    }
+
+    .layout-tuner strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--white);
+      font-size: 13px;
+    }
+
+    .layout-tuner label {
+      display: grid;
+      gap: 5px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .layout-tuner input,
+    .layout-tuner textarea {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .layout-tuner textarea {
+      min-height: 86px;
+      padding: 8px;
+      resize: vertical;
+      border: 1px solid rgba(148, 163, 184, .24);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(2, 6, 23, .48);
+      font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
 
     @media (max-width: 960px) {
@@ -925,6 +978,71 @@
       };
       var defaultShadeAngle = 0;
       var apertureDirection = Math.atan2(apertureCenter.y - hinge.y, apertureCenter.x - hinge.x) * 180 / Math.PI;
+
+      function setupLayoutTuner() {
+        if (!new URLSearchParams(window.location.search).has("tune")) {
+          return;
+        }
+
+        var root = document.documentElement;
+        var controls = [
+          { key: "--lamp-top", label: "Лампа по высоте", min: 0, max: 70, value: 28 },
+          { key: "--sidebar-top", label: "Левый заголовок", min: 24, max: 90, value: 54 },
+          { key: "--main-top", label: "Правый текст", min: 24, max: 100, value: 64 },
+          { key: "--section-gap", label: "Расстояние до опыта", min: 70, max: 170, value: 116 },
+          { key: "shade-angle", label: "Угол плафона", min: -12, max: 12, value: defaultShadeAngle }
+        ];
+        var panel = document.createElement("div");
+        var output = document.createElement("textarea");
+        panel.className = "layout-tuner";
+        panel.innerHTML = "<strong>Настройка композиции</strong>";
+        output.readOnly = true;
+
+        function refreshOutput() {
+          output.value = controls.map(function (control) {
+            var value = Number(control.input.value);
+            if (control.key === "shade-angle") {
+              return "defaultShadeAngle = " + value + ";";
+            }
+            return control.key + ": " + value + "px;";
+          }).join("\n");
+        }
+
+        controls.forEach(function (control) {
+          var label = document.createElement("label");
+          var range = document.createElement("input");
+          range.type = "range";
+          range.min = control.min;
+          range.max = control.max;
+          range.value = control.value;
+          range.step = control.key === "shade-angle" ? "0.5" : "1";
+          control.input = range;
+          label.append(control.label, range);
+          panel.appendChild(label);
+
+          range.addEventListener("input", function () {
+            var value = Number(range.value);
+            if (control.key === "shade-angle") {
+              defaultShadeAngle = value;
+              if (!activeTarget && lampShade) {
+                lampShade.setAttribute("transform", "rotate(" + defaultShadeAngle + " " + hinge.x + " " + hinge.y + ")");
+              }
+            } else {
+              root.style.setProperty(control.key, value + "px");
+            }
+            if (activeTarget) {
+              moveLight(activeTarget);
+            }
+            refreshOutput();
+          });
+        });
+
+        panel.appendChild(output);
+        document.body.appendChild(panel);
+        refreshOutput();
+      }
+
+      setupLayoutTuner();
 
       function clearLight() {
         if (activeTarget) {
