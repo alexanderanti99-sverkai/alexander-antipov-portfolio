@@ -21,12 +21,12 @@
       --white: #f8fafc;
       --shadow: 0 24px 80px rgba(2, 6, 23, .42);
       --radius: 8px;
-      --lamp-top: clamp(18px, 3vh, 34px);
-      --sidebar-top: 54px;
-      --main-top: 64px;
-      --section-gap: 116px;
-      --stats-y: 0px;
-      --contacts-y: 0px;
+      --lamp-top: -32px;
+      --sidebar-top: 51px;
+      --main-top: 69px;
+      --section-gap: 107px;
+      --stats-y: -35px;
+      --contacts-y: -30px;
     }
 
     * {
@@ -387,7 +387,7 @@
       border-color: rgba(255, 255, 255, .8);
       border-radius: 4px;
       box-shadow: 0 26px 90px rgba(255, 255, 225, .18), 0 24px 70px rgba(2, 6, 23, .45);
-      transform: translateY(-2px);
+      transform: none;
     }
 
     .timeline-item.is-lit .period,
@@ -843,16 +843,17 @@
           </article>
 
           <article class="timeline-item">
-            <div class="period">2023</div>
+            <div class="period">Март 2022 — май 2022</div>
             <div>
-              <h3 class="item-title">Консультант 1С</h3>
-              <p class="item-subtitle">РУНА</p>
-              <p class="item-text">Консультировал пользователей по продукту 1С и участвовал в тестировании новой редакции. Этот опыт помогает лучше понимать бухгалтерские и операционные сценарии в SverkAI.</p>
+              <h3 class="item-title">Продавец-консультант</h3>
+              <p class="item-subtitle">Unaffected</p>
+              <p class="item-text">Работал с покупателями, продажами, возвратами, онлайн-заказами и отгрузкой товара. Вел ежедневную отчетность в "МойСклад", работал с кассой, планировал задачи в Trello, помогал с товаром и контентом в VK и на сайте магазина, закрывал нестандартные операционные задачи.</p>
               <ul class="tags">
-                <li>1С</li>
-                <li>Support</li>
-                <li>Testing</li>
-                <li>Business software</li>
+                <li>Sales</li>
+                <li>Retail operations</li>
+                <li>МойСклад</li>
+                <li>Trello</li>
+                <li>Content</li>
               </ul>
             </div>
           </article>
@@ -982,7 +983,7 @@
         x: apertureCenter.x + apertureAxis.x * beamSourceHalfLength,
         y: apertureCenter.y + apertureAxis.y * beamSourceHalfLength
       };
-      var defaultShadeAngle = 0;
+      var defaultShadeAngle = 9;
       var apertureDirection = Math.atan2(apertureCenter.y - hinge.y, apertureCenter.x - hinge.x) * 180 / Math.PI;
 
       function setupLayoutTuner() {
@@ -1116,6 +1117,15 @@
         return lower.slice(0, -1).concat(upper.slice(0, -1));
       }
 
+      function scheduleLightUpdate(target) {
+        moveLight(target);
+        requestAnimationFrame(function () {
+          if (activeTarget === target) {
+            moveLight(target);
+          }
+        });
+      }
+
       function moveLight(target) {
         if (!desktopQuery.matches || !lampRig || !lampShade || !lampPivot || !beam || !lampScene) {
           return;
@@ -1168,10 +1178,10 @@
 
       lightTargets.forEach(function (target) {
         target.addEventListener("mouseenter", function () {
-          moveLight(target);
+          scheduleLightUpdate(target);
         });
         target.addEventListener("focusin", function () {
-          moveLight(target);
+          scheduleLightUpdate(target);
         });
         target.addEventListener("mouseleave", clearLight);
         target.addEventListener("focusout", clearLight);
