@@ -268,7 +268,9 @@
       will-change: transform;
     }
 
-    .socials a {
+    .socials a,
+    .socials button {
+      appearance: none;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -278,9 +280,11 @@
       border-radius: 8px;
       background: rgba(15, 23, 42, .34);
       color: var(--muted);
+      font: inherit;
       font-size: 13px;
       font-weight: 700;
       line-height: 1;
+      cursor: pointer;
       transition: color .18s ease, transform .18s ease, border-color .18s ease, background .18s ease;
     }
 
@@ -295,11 +299,99 @@
       stroke-linejoin: round;
     }
 
-    .socials a:hover {
+    .socials svg.brand-icon,
+    .socials svg.brand-icon path {
+      fill: currentColor;
+      stroke: none;
+      fill-rule: evenodd;
+    }
+
+    .socials a:hover,
+    .socials button:hover {
       color: var(--accent);
       border-color: rgba(94, 234, 212, .36);
       background: rgba(94, 234, 212, .10);
       transform: translateY(-1px);
+    }
+
+    .email-dialog[hidden] {
+      display: none;
+    }
+
+    .email-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(2, 6, 23, .58);
+      backdrop-filter: blur(12px);
+    }
+
+    .email-card {
+      width: min(420px, 100%);
+      padding: 22px;
+      border: 1px solid rgba(148, 163, 184, .24);
+      border-radius: 10px;
+      background: rgba(15, 23, 42, .96);
+      box-shadow: var(--shadow);
+    }
+
+    .email-card h2 {
+      margin: 0;
+      color: var(--white);
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .email-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .email-value {
+      display: block;
+      margin-top: 14px;
+      padding: 12px;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 8px;
+      color: var(--accent);
+      background: rgba(2, 6, 23, .44);
+      font: 14px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow-wrap: anywhere;
+    }
+
+    .email-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .email-actions button {
+      min-height: 38px;
+      padding: 9px 13px;
+      border: 1px solid rgba(148, 163, 184, .26);
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(15, 23, 42, .56);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: color .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .email-actions button:hover {
+      color: var(--accent);
+      border-color: rgba(94, 234, 212, .38);
+      background: rgba(94, 234, 212, .10);
+    }
+
+    .email-status {
+      min-height: 20px;
     }
 
     main {
@@ -798,17 +890,17 @@
             <span>ТГ</span>
           </a>
           <a href="https://max.ru/u/f9LHodD0cOL1784P6l2Xc-UvpRgDR8mdOHF__JjOmMs7ll4pTwNEUJGFDhQ" target="_blank" rel="noreferrer" aria-label="MAX">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17V7h3.2l4.8 6.1L16.8 7H20v10"/><path d="M7.2 7v10"/><path d="M16.8 7v10"/></svg>
+            <svg class="brand-icon" viewBox="100 100 800 800" aria-hidden="true"><path d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z"/></svg>
             <span>MAX</span>
           </a>
           <a href="https://vk.com/adresstranichkii" target="_blank" rel="noreferrer" aria-label="VK">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.2c.1 4.7 2.5 7.5 6.6 7.5h.2v-2.7c1.6.2 2.8 1.3 3.3 2.7h2.8c-.6-2-2-3.1-2.9-3.5.9-.5 2.1-1.8 2.4-4h-2.6c-.5 1.5-1.8 2.9-3 3.1V8.2H8.2v5.4C6.9 13.3 5.4 11.8 5.3 8.2Z"/></svg>
+            <svg class="brand-icon" viewBox="170 320 700 410" aria-hidden="true"><path d="M503.94561 704.02937h39.26903s11.85891-1.30711 17.92254-7.83113c5.57318-5.99655 5.39504-17.24932 5.39504-17.24932s-.76808-52.69185 23.68311-60.45127c24.11342-7.64837 55.07011 50.92435 87.87991 73.44841c24.8121 17.03879 43.66697 13.30946 43.66697 13.30946l87.73879-1.22615s45.89484-2.8317 24.13192-38.91738c-1.78138-2.94738-12.67788-26.69295-65.23786-75.47965c-55.01922-51.06317-47.64384-42.80173 18.62584-131.12814c40.35868-53.79075 56.49059-86.62831 51.44951-100.69196c-4.80279-13.39969-34.48938-9.86006-34.48938-9.86006l-98.78566.61076s-7.32911-.99711-12.75654 2.25101c-5.30945 3.17641-8.7172 10.59806-8.7172 10.59806s-15.64145 41.62185-36.48592 77.02506c-43.98854 74.69306-61.58025 78.6468-68.77055 74.00133c-16.72879-10.8109-12.54833-43.42174-12.54833-66.59588c0-72.38884 10.97979-102.57052-21.38119-110.38314c-10.73687-2.5911-18.64666-4.30539-46.11-4.58532c-35.25052-.35859-65.07824.10873-81.97128 8.38405c-11.23889 5.50378-19.90982 17.76523-14.62583 18.47084c6.53096.86987 21.31411 3.99076 29.15218 14.65591c10.12611 13.77678 9.77215 44.7034 9.77215 44.7034s5.8184 85.21246-13.58477 95.79433c-13.31408 7.2597-31.58133-7.56046-70.79947-75.32696c-20.09027-34.71148-35.2644-73.08519-35.2644-73.08519s-2.92193-7.16948-8.14114-11.00755c-6.32968-4.6501-15.17412-6.12378-15.17412-6.12378l-93.87642.61307s-14.08914.39329-19.26671 6.5217c-4.60614 5.45519-.36781 16.72416-.36781 16.72416s73.49006 171.94257 156.71058 258.59171c76.31481 79.45421 162.95701 74.23962 162.95701 74.23962"/></svg>
             <span>VK</span>
           </a>
-          <a href="mailto:alexander.anti.99@gmail.com" aria-label="Email">
+          <button type="button" id="email-open" aria-label="Показать почту">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
             <span>почта</span>
-          </a>
+          </button>
         </div>
       </div>
     </header>
@@ -864,12 +956,12 @@
         <h2 class="section-title">Проекты</h2>
         <div class="timeline">
           <article class="project">
-            <a class="project-thumb js-sverkai-link" href="https://d4811ea7a2d28884-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть SverkAI">
+            <a class="project-thumb js-sverkai-link" href="https://8400698ac3b3df99-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть SverkAI">
               <img src="assets/sverkai.png" alt="Интерфейс SverkAI">
             </a>
             <div>
               <h3 class="item-title">
-                <a class="js-sverkai-link" href="https://d4811ea7a2d28884-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer">SverkAI</a>
+                <a class="js-sverkai-link" href="https://8400698ac3b3df99-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer">SverkAI</a>
               </h3>
               <p class="item-subtitle">Веб-сервис для поиска расхождений в актах сверки</p>
               <p class="item-text">Сервис принимает Excel/PDF, извлекает табличные данные, сравнивает позиции, объясняет расхождения и формирует отчет. Для сложных актов добавлен экспертный анализ причин расхождения сальдо с AI-пояснением поверх рассчитанной числовой базы.</p>
@@ -885,12 +977,12 @@
           </article>
 
           <article class="project">
-            <a class="project-thumb js-vk-link" href="https://12dfa336ccaa2be5-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть VK Beat Distributor">
+            <a class="project-thumb js-vk-link" href="https://26ae5e542418254a-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть VK Beat Distributor">
               <img src="assets/vk-beat-distributor.png" alt="Интерфейс VK Beat Distributor">
             </a>
             <div>
               <h3 class="item-title">
-                <a class="js-vk-link" href="https://12dfa336ccaa2be5-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer">VK Beat Distributor</a>
+                <a class="js-vk-link" href="https://26ae5e542418254a-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer">VK Beat Distributor</a>
               </h3>
               <p class="item-subtitle">AI-assisted automation для продвижения музыкального контента</p>
               <p class="item-text">Инструмент помогает битмейкеру готовить пост, подбирать VK-группы, проверять правила, адаптировать сообщение через AI и вести историю рассылок. Интерфейс учитывает ограничения массовой коммуникации и повторяемые сценарии.</p>
@@ -933,6 +1025,19 @@
     </main>
   </div>
 
+  <div class="email-dialog" id="email-dialog" hidden role="dialog" aria-modal="true" aria-labelledby="email-title">
+    <div class="email-card">
+      <h2 id="email-title">Почта для связи</h2>
+      <p>Можно скопировать адрес и написать в удобном почтовом сервисе.</p>
+      <span class="email-value" id="email-value">alexander.anti.99@gmail.com</span>
+      <div class="email-actions">
+        <button type="button" id="email-copy">Скопировать</button>
+        <button type="button" id="email-close">Закрыть</button>
+      </div>
+      <p class="email-status" id="email-status" aria-live="polite"></p>
+    </div>
+  </div>
+
   <script src="assets/links.js"></script>
   <script>
     (function () {
@@ -947,6 +1052,88 @@
           node.href = links.vkBeatDistributor;
         });
       }
+
+      var emailAddress = "alexander.anti.99@gmail.com";
+      var emailOpen = document.getElementById("email-open");
+      var emailDialog = document.getElementById("email-dialog");
+      var emailCopy = document.getElementById("email-copy");
+      var emailClose = document.getElementById("email-close");
+      var emailStatus = document.getElementById("email-status");
+
+      function openEmailDialog() {
+        if (!emailDialog) return;
+        emailDialog.hidden = false;
+        if (emailStatus) {
+          emailStatus.textContent = "";
+        }
+        if (emailCopy) {
+          emailCopy.focus();
+        }
+      }
+
+      function closeEmailDialog() {
+        if (!emailDialog) return;
+        emailDialog.hidden = true;
+        if (emailOpen) {
+          emailOpen.focus();
+        }
+      }
+
+      function copyEmail() {
+        function copied() {
+          if (emailStatus) {
+            emailStatus.textContent = "Адрес скопирован.";
+          }
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(emailAddress).then(copied).catch(function () {
+            if (emailStatus) {
+              emailStatus.textContent = emailAddress;
+            }
+          });
+          return;
+        }
+
+        var textarea = document.createElement("textarea");
+        textarea.value = emailAddress;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand("copy");
+          copied();
+        } catch (error) {
+          if (emailStatus) {
+            emailStatus.textContent = emailAddress;
+          }
+        }
+        textarea.remove();
+      }
+
+      if (emailOpen) {
+        emailOpen.addEventListener("click", openEmailDialog);
+      }
+      if (emailCopy) {
+        emailCopy.addEventListener("click", copyEmail);
+      }
+      if (emailClose) {
+        emailClose.addEventListener("click", closeEmailDialog);
+      }
+      if (emailDialog) {
+        emailDialog.addEventListener("click", function (event) {
+          if (event.target === emailDialog) {
+            closeEmailDialog();
+          }
+        });
+      }
+      window.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && emailDialog && !emailDialog.hidden) {
+          closeEmailDialog();
+        }
+      });
 
       var lampScene = document.querySelector(".lamp-scene");
       var lampRig = document.querySelector(".lamp-rig");
