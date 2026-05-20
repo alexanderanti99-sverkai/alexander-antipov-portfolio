@@ -71,8 +71,8 @@
     .lamp-rig {
       position: fixed;
       left: clamp(10px, 2vw, 34px);
-      top: clamp(74px, 9vh, 118px);
-      width: clamp(460px, 30vw, 620px);
+      top: clamp(18px, 3vh, 46px);
+      width: clamp(520px, 30vw, 640px);
       aspect-ratio: 993 / 1584;
       z-index: 2;
       opacity: 1;
@@ -125,7 +125,7 @@
 
     .lamp-beam-shape {
       fill: url(#lampBeamGradient);
-      filter: blur(.3px);
+      filter: none;
     }
 
     .lamp-scene.is-on .lamp-beam-svg {
@@ -150,7 +150,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 84px 0 64px;
+      padding: 56px 0 64px;
     }
 
     .intro h1 {
@@ -271,7 +271,7 @@
     }
 
     main {
-      padding: 84px 0 96px;
+      padding: 56px 0 96px;
     }
 
     .section {
@@ -353,6 +353,7 @@
     .skill-block.is-lit {
       background: rgba(248, 250, 252, .97);
       border-color: rgba(255, 255, 255, .8);
+      border-radius: 4px;
       box-shadow: 0 26px 90px rgba(255, 255, 225, .18), 0 24px 70px rgba(2, 6, 23, .45);
       transform: translateY(-2px);
     }
@@ -372,6 +373,7 @@
 
     .timeline-item.is-lit .item-subtitle,
     .timeline-item.is-lit .item-text,
+    .timeline-item.is-lit .item-list,
     .project.is-lit .item-subtitle,
     .project.is-lit .item-text,
     .skill-block.is-lit p {
@@ -416,6 +418,18 @@
       color: var(--muted);
       font-size: 15px;
       line-height: 1.7;
+    }
+
+    .item-list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.62;
+    }
+
+    .item-list li + li {
+      margin-top: 6px;
     }
 
     .tags {
@@ -532,17 +546,6 @@
     .resume-link:hover {
       color: var(--accent);
       border-color: var(--accent);
-    }
-
-    .note {
-      margin-top: 28px;
-      padding: 18px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(251, 191, 36, .22);
-      background: rgba(251, 191, 36, .08);
-      color: #fcd34d;
-      font-size: 14px;
-      line-height: 1.62;
     }
 
     @media (max-width: 960px) {
@@ -680,7 +683,7 @@
                 fill="none" stroke="#c7c7c0" stroke-width="22" stroke-linecap="round" opacity=".30"/>
         </g>
 
-        <g id="portfolioLampShade" class="lamp-svg-shade glow" transform="rotate(-6 487 302)">
+        <g id="portfolioLampShade" class="lamp-svg-shade glow" transform="rotate(0 487 302)">
           <circle cx="487" cy="302" r="72" fill="#fbfbf7"/>
           <path d="M454 218
                    L893 86
@@ -742,11 +745,22 @@
         <h2 class="section-title">Опыт</h2>
         <div class="timeline">
           <article class="timeline-item">
-            <div class="period">2023 — 2025</div>
+            <div class="period">Июнь 2023 — декабрь 2025</div>
             <div>
-              <h3 class="item-title">AI Solutions Specialist / LLM Automation Engineer</h3>
-              <p class="item-subtitle">Проектная работа / частная практика</p>
-              <p class="item-text">Проектировал многошаговые LLM-пайплайны для анализа, генерации и структурирования информации. Настраивал workflow от требований до финальной постобработки результата, оптимизировал prompt-стратегии и сопровождал коммуникацию с клиентами.</p>
+              <h3 class="item-title">Специалист по AI-автоматизации и обработке информации</h3>
+              <p class="item-subtitle">Июнь 2023 — декабрь 2025 · 2 года и 7 месяцев</p>
+              <ul class="item-list">
+                <li>Поиск и привлечение клиентов, формирование коммерческого и маркетингового предложения.</li>
+                <li>Проведение первичного интервью с заказчиком, уточнение целей, ограничений и критериев результата.</li>
+                <li>Сбор, формализация и доработка требований заказчика.</li>
+                <li>Декомпозиция задач, построение плана работ и логики выполнения проекта.</li>
+                <li>Проектирование алгоритмов обработки информации и работы с документами.</li>
+                <li>Автоматизация и оптимизация документооборота, разработка макросов и вспомогательных инструментов.</li>
+                <li>Создание, тестирование и улучшение промптов для ChatGPT и Claude.</li>
+                <li>Построение AI-assisted workflow для анализа, генерации, редактирования и структурирования текстов.</li>
+                <li>Проверка качества AI-результатов, доработка логики, промптов и финальная постобработка.</li>
+                <li>Сопровождение и консультация клиента.</li>
+              </ul>
               <ul class="tags">
                 <li>Claude</li>
                 <li>ChatGPT</li>
@@ -778,12 +792,12 @@
         <h2 class="section-title">Проекты</h2>
         <div class="timeline">
           <article class="project">
-            <a class="project-thumb js-sverkai-link" href="https://3c366be7a0b39cdf-79-139-143-29.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть SverkAI">
+            <a class="project-thumb js-sverkai-link" href="https://d4811ea7a2d28884-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть SverkAI">
               <img src="assets/sverkai.png" alt="Интерфейс SverkAI">
             </a>
             <div>
               <h3 class="item-title">
-                <a class="js-sverkai-link" href="https://3c366be7a0b39cdf-79-139-143-29.serveousercontent.com" target="_blank" rel="noreferrer">SverkAI</a>
+                <a class="js-sverkai-link" href="https://d4811ea7a2d28884-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer">SverkAI</a>
               </h3>
               <p class="item-subtitle">Веб-сервис для поиска расхождений в актах сверки</p>
               <p class="item-text">Сервис принимает Excel/PDF, извлекает табличные данные, сравнивает позиции, объясняет расхождения и формирует отчет. Для сложных актов добавлен экспертный анализ причин расхождения сальдо с AI-пояснением поверх рассчитанной числовой базы.</p>
@@ -799,12 +813,12 @@
           </article>
 
           <article class="project">
-            <a class="project-thumb js-vk-link" href="https://6fe3293c2554033e-79-139-143-29.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть VK Beat Distributor">
+            <a class="project-thumb js-vk-link" href="https://12dfa336ccaa2be5-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer" aria-label="Открыть VK Beat Distributor">
               <img src="assets/vk-beat-distributor.png" alt="Интерфейс VK Beat Distributor">
             </a>
             <div>
               <h3 class="item-title">
-                <a class="js-vk-link" href="https://6fe3293c2554033e-79-139-143-29.serveousercontent.com" target="_blank" rel="noreferrer">VK Beat Distributor</a>
+                <a class="js-vk-link" href="https://12dfa336ccaa2be5-79-139-134-126.serveousercontent.com" target="_blank" rel="noreferrer">VK Beat Distributor</a>
               </h3>
               <p class="item-subtitle">AI-assisted automation для продвижения музыкального контента</p>
               <p class="item-text">Инструмент помогает битмейкеру готовить пост, подбирать VK-группы, проверять правила, адаптировать сообщение через AI и вести историю рассылок. Интерфейс учитывает ограничения массовой коммуникации и повторяемые сценарии.</p>
@@ -819,7 +833,6 @@
             </div>
           </article>
         </div>
-        <div class="note">Демо-ссылки проектов временные и работают, когда локальные стенды подняты. Постоянная часть портфолио размещена на GitHub Pages.</div>
       </section>
 
       <section class="section" id="skills">
@@ -898,7 +911,7 @@
         x: apertureCenter.x + apertureAxis.x * beamSourceHalfLength,
         y: apertureCenter.y + apertureAxis.y * beamSourceHalfLength
       };
-      var defaultShadeAngle = -6;
+      var defaultShadeAngle = 0;
       var apertureDirection = Math.atan2(apertureCenter.y - hinge.y, apertureCenter.x - hinge.x) * 180 / Math.PI;
 
       function clearLight() {
