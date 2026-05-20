@@ -751,7 +751,7 @@
                 fill="none" stroke="#c7c7c0" stroke-width="22" stroke-linecap="round" opacity=".30"/>
         </g>
 
-        <g id="portfolioLampShade" class="lamp-svg-shade glow" transform="rotate(0 487 302)">
+        <g id="portfolioLampShade" class="lamp-svg-shade glow" transform="rotate(9 487 302)">
           <circle cx="487" cy="302" r="72" fill="#fbfbf7"/>
           <path d="M454 218
                    L893 86
@@ -986,6 +986,12 @@
       var defaultShadeAngle = 9;
       var apertureDirection = Math.atan2(apertureCenter.y - hinge.y, apertureCenter.x - hinge.x) * 180 / Math.PI;
 
+      function setDefaultLampPose() {
+        if (lampShade) {
+          lampShade.setAttribute("transform", "rotate(" + defaultShadeAngle + " " + hinge.x + " " + hinge.y + ")");
+        }
+      }
+
       function setupLayoutTuner() {
         if (!new URLSearchParams(window.location.search).has("tune")) {
           return;
@@ -1052,6 +1058,7 @@
       }
 
       setupLayoutTuner();
+      setDefaultLampPose();
 
       function clearLight() {
         if (activeTarget) {
@@ -1062,7 +1069,7 @@
           lampScene.classList.remove("is-on");
         }
         if (lampShade) {
-          lampShade.setAttribute("transform", "rotate(" + defaultShadeAngle + " " + hinge.x + " " + hinge.y + ")");
+          setDefaultLampPose();
         }
         if (beam) {
           beam.setAttribute("points", "");
