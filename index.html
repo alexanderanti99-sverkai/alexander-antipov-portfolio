@@ -71,7 +71,7 @@
     .lamp-rig {
       position: fixed;
       left: clamp(10px, 2vw, 34px);
-      top: clamp(18px, 3vh, 46px);
+      top: 0;
       width: clamp(520px, 30vw, 640px);
       aspect-ratio: 993 / 1584;
       z-index: 2;
@@ -150,7 +150,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 56px 0 64px;
+      padding: 48px 0 64px;
     }
 
     .intro h1 {
@@ -255,27 +255,49 @@
     .socials {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
     .socials a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(15, 23, 42, .34);
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      transition: color .18s ease, transform .18s ease;
+      line-height: 1;
+      transition: color .18s ease, transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .socials svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .socials a:hover {
       color: var(--accent);
+      border-color: rgba(94, 234, 212, .36);
+      background: rgba(94, 234, 212, .10);
       transform: translateY(-1px);
     }
 
     main {
-      padding: 56px 0 96px;
+      padding: 52px 0 96px;
     }
 
     .section {
-      padding-bottom: 92px;
+      padding-bottom: 116px;
       scroll-margin-top: 80px;
     }
 
@@ -711,9 +733,23 @@
           <div class="stat"><strong>900+</strong><span>задач с Claude и ChatGPT</span></div>
           <div class="stat"><strong>50+</strong><span>клиентов в проектной работе</span></div>
         </div>
-        <div class="socials" aria-label="Ссылки">
-          <a href="https://github.com/alexanderanti99-sverkai" target="_blank" rel="noreferrer">GitHub</a>
-          <a href="https://alexanderanti99-sverkai.github.io/alexander-antipov-portfolio/" target="_blank" rel="noreferrer">Portfolio</a>
+        <div class="socials" aria-label="Контакты">
+          <a href="https://t.me/epohamm" target="_blank" rel="noreferrer" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.5 3.8 11.3c-.9.4-.9 1.6.1 1.9l4.4 1.4 1.7 5c.3.9 1.4 1 1.9.2l2.5-3.5 4.5 3.3c.8.6 1.9.1 2-1l2.4-13c.2-.9-.7-1.6-1.8-1.1Z"/><path d="m8.3 14.6 8.8-6.2-7.1 7.9"/></svg>
+            <span>ТГ</span>
+          </a>
+          <a href="https://max.ru/u/f9LHodD0cOL1784P6l2Xc-UvpRgDR8mdOHF__JjOmMs7ll4pTwNEUJGFDhQ" target="_blank" rel="noreferrer" aria-label="MAX">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17V7h3.2l4.8 6.1L16.8 7H20v10"/><path d="M7.2 7v10"/><path d="M16.8 7v10"/></svg>
+            <span>MAX</span>
+          </a>
+          <a href="https://vk.com/adresstranichkii" target="_blank" rel="noreferrer" aria-label="VK">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.2c.1 4.7 2.5 7.5 6.6 7.5h.2v-2.7c1.6.2 2.8 1.3 3.3 2.7h2.8c-.6-2-2-3.1-2.9-3.5.9-.5 2.1-1.8 2.4-4h-2.6c-.5 1.5-1.8 2.9-3 3.1V8.2H8.2v5.4C6.9 13.3 5.4 11.8 5.3 8.2Z"/></svg>
+            <span>VK</span>
+          </a>
+          <a href="mailto:alexander.anti.99@gmail.com" aria-label="Email">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+            <span>почта</span>
+          </a>
         </div>
       </div>
     </header>
