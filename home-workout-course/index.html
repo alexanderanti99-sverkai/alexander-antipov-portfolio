@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Форма дома - 4-недельный марафон домашних тренировок без зала и инвентаря." />
+  <title>Форма дома - курс домашних тренировок</title>
+  <style>
+    :root {
+      --ink: #111312;
+      --ink-soft: #252a27;
+      --paper: #f5f6ef;
+      --paper-2: #ebeede;
+      --white: #ffffff;
+      --muted: #656f67;
+      --line: #d8ddd0;
+      --lime: #d7ff3f;
+      --coral: #ff6542;
+      --mint: #6edfc1;
+      --shadow: 0 18px 48px rgba(17, 19, 18, .12);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.45;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      overflow: hidden;
+    }
+
+    .section {
+      padding: 72px 20px;
+    }
+
+    .wrap {
+      width: min(1160px, 100%);
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: fixed;
+      z-index: 20;
+      left: 12px;
+      right: 12px;
+      top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: min(1160px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 10px 10px 10px 16px;
+      border: 1px solid rgba(255, 255, 255, .5);
+      border-radius: 999px;
+      background: rgba(245, 246, 239, .72);
+      box-shadow: 0 8px 28px rgba(17, 19, 18, .08);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, var(--white) 0 16%, transparent 17%),
+        linear-gradient(135deg, var(--lime), var(--mint));
+      border: 1px solid var(--ink);
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 800px;
+      margin-bottom: 18px;
+      font-size: clamp(42px, 12vw, 98px);
+      line-height: .9;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 780px;
+      margin-bottom: 18px;
+      font-size: clamp(32px, 8vw, 64px);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin-bottom: 9px;
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 650px;
+      margin-bottom: 28px;
+      color: var(--muted);
+      font-size: clamp(18px, 4vw, 21px);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding-top: 102px;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(215, 255, 63, .55), transparent 22%),
+        radial-gradient(circle at 15% 72%, rgba(110, 223, 193, .42), transparent 28%),
+        var(--paper);
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 22px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink);
+      font-weight: 950;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-primary {
+      background: var(--lime);
+      box-shadow: 0 10px 0 var(--ink);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 14px 0 var(--ink);
+    }
+
+    .btn-dark {
+      background: var(--ink);
+      color: var(--white);
+      box-shadow: 0 10px 0 rgba(17, 19, 18, .24);
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .6);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .hero-media {
+      position: relative;
+      min-height: 430px;
+      border-radius: 30px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, transparent, rgba(17, 19, 18, .28)),
+        url("https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=84") center / cover;
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .hero-media::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255, 255, 255, .55);
+      border-radius: 22px;
+      pointer-events: none;
+    }
+
+    .hero-stats {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .mini-stat {
+      min-width: 0;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .88);
+      backdrop-filter: blur(18px);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: clamp(20px, 6vw, 28px);
+      line-height: 1;
+    }
+
+    .mini-stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .problem {
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .problem .eyebrow,
+    .problem .lead {
+      color: #bcc7bd;
+    }
+
+    .cards {
+      display: grid;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .card {
+      padding: 22px;
+      border: 1px solid rgba(17, 19, 18, .12);
+      border-radius: var(--radius);
+      background: var(--white);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .problem .card {
+      background: var(--ink-soft);
+      border-color: rgba(255, 255, 255, .12);
+    }
+
+    .problem .card h3 {
+      color: var(--white);
+    }
+
+    .problem .card p {
+      color: #c7d0c5;
+    }
+
+    .program-head {
+      display: grid;
+      gap: 22px;
+      align-items: end;
+    }
+
+    .program-note {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--white);
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    .program-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 34px;
+      counter-reset: week;
+    }
+
+    .week {
+      position: relative;
+      min-height: 240px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      counter-increment: week;
+      overflow: hidden;
+    }
+
+    .week::before {
+      content: "0" counter(week);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 32px;
+      margin-bottom: 38px;
+      border-radius: 999px;
+      background: var(--lime);
+      color: var(--ink);
+      font-weight: 950;
+    }
+
+    .week::after {
+      content: "";
+      position: absolute;
+      right: -28px;
+      top: -28px;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--paper-2);
+    }
+
+    .week:nth-child(2)::after {
+      background: rgba(255, 101, 66, .22);
+    }
+
+    .week:nth-child(3)::after {
+      background: rgba(110, 223, 193, .35);
+    }
+
+    .week:nth-child(4)::after {
+      background: rgba(215, 255, 63, .45);
+    }
+
+    .week p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .proof {
+      background: var(--paper-2);
+    }
+
+    .proof-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .metric {
+      padding: 26px;
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--lime);
+      font-size: clamp(38px, 12vw, 68px);
+      line-height: .9;
+      letter-spacing: 0;
+    }
+
+    .metric span {
+      color: #cbd5cc;
+      font-weight: 800;
+    }
+
+    .quote {
+      padding: 28px;
+      border-radius: var(--radius);
+      background: var(--coral);
+      color: var(--white);
+    }
+
+    .quote p {
+      margin-bottom: 18px;
+      font-size: clamp(22px, 5vw, 34px);
+      line-height: 1.08;
+      font-weight: 950;
+    }
+
+    .quote span {
+      color: rgba(255, 255, 255, .78);
+      font-weight: 800;
+    }
+
+    .final {
+      background: var(--white);
+    }
+
+    .checkout {
+      display: grid;
+      gap: 22px;
+      margin-top: 34px;
+    }
+
+    .price-card {
+      padding: 28px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 90% 8%, rgba(215, 255, 63, .45), transparent 28%),
+        var(--ink);
+      color: var(--white);
+    }
+
+    .price-card p {
+      color: #c8d1c8;
+    }
+
+    .price-value {
+      margin: 18px 0;
+      color: var(--lime);
+      font-size: clamp(48px, 13vw, 74px);
+      font-weight: 950;
+      line-height: .9;
+    }
+
+    .includes {
+      display: grid;
+      gap: 10px;
+      margin: 24px 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .includes li {
+      display: flex;
+      gap: 10px;
+      color: #edf4eb;
+      font-weight: 800;
+    }
+
+    .includes li::before {
+      content: "";
+      flex: 0 0 10px;
+      width: 10px;
+      height: 10px;
+      margin-top: 7px;
+      border-radius: 50%;
+      background: var(--mint);
+    }
+
+    .pay-form {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .field {
+      width: 100%;
+      min-height: 54px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, .1);
+      color: var(--white);
+      outline: none;
+    }
+
+    .field::placeholder {
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .faq {
+      display: grid;
+      gap: 10px;
+    }
+
+    details {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--paper);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 950;
+    }
+
+    details p {
+      margin: 12px 0 0;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (min-width: 720px) {
+      .section {
+        padding: 104px 28px;
+      }
+
+      .nav-links {
+        display: flex;
+      }
+
+      .hero-grid,
+      .checkout {
+        grid-template-columns: 1fr .88fr;
+      }
+
+      .cards,
+      .proof-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .program-head {
+        grid-template-columns: 1fr 340px;
+      }
+
+      .program-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .quote {
+        grid-column: span 3;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .nav {
+        top: 8px;
+      }
+
+      .nav .btn {
+        min-height: 42px;
+        padding: 0 14px;
+        font-size: 13px;
+      }
+
+      .brand {
+        font-size: 14px;
+      }
+
+      .hero-media {
+        min-height: 390px;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Главная навигация">
+    <a class="brand" href="#top" aria-label="Форма дома">
+      <span class="brand-mark"></span>
+      <span>Форма дома</span>
+    </a>
+    <div class="nav-links">
+      <a href="#benefits">Выгоды</a>
+      <a href="#program">Программа</a>
+      <a href="#results">Результаты</a>
+    </div>
+    <a class="btn btn-dark" href="#pay">Оплатить</a>
+  </nav>
+
+  <main class="page" id="top">
+    <section class="section hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">4 недели · дома · без зала</p>
+          <h1>Собери форму дома за 28 дней</h1>
+          <p class="lead">Марафон коротких тренировок для занятых людей: 25 минут в день, понятный план по неделям, контроль прогресса и питание без сложных схем.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#pay">Начать марафон</a>
+            <a class="btn" href="#program">Смотреть программу</a>
+          </div>
+          <div class="trust-row" aria-label="Ключевые условия курса">
+            <span class="pill">Старт сразу после оплаты</span>
+            <span class="pill">Для новичков</span>
+            <span class="pill">Без инвентаря</span>
+          </div>
+        </div>
+
+        <div class="hero-media" role="img" aria-label="Девушка тренируется дома на коврике">
+          <div class="hero-stats">
+            <div class="mini-stat"><strong>25 мин</strong><span>одна тренировка</span></div>
+            <div class="mini-stat"><strong>0 ₽</strong><span>на инвентарь</span></div>
+            <div class="mini-stat"><strong>28 дней</strong><span>до привычки</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section problem" id="benefits">
+      <div class="wrap">
+        <p class="eyebrow">Почему не получается</p>
+        <h2>Проблема не в лени. Проблема в хаосе.</h2>
+        <p class="lead">Домашние тренировки часто срываются из-за случайных видео, слишком жёсткого темпа и отсутствия видимого прогресса.</p>
+
+        <div class="cards">
+          <article class="card">
+            <h3>План вместо импровизации</h3>
+            <p>Каждый день понятно, что делать, сколько подходов и когда отдыхать.</p>
+          </article>
+          <article class="card">
+            <h3>Нагрузка без выгорания</h3>
+            <p>Темп растёт постепенно: тело успевает адаптироваться, а мотивация не ломается.</p>
+          </article>
+          <article class="card">
+            <h3>Результат видно</h3>
+            <p>Замеры, фото, трекер привычки и контрольные тренировки каждую неделю.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="program">
+      <div class="wrap">
+        <div class="program-head">
+          <div>
+            <p class="eyebrow">Что внутри</p>
+            <h2>Программа по неделям</h2>
+            <p class="lead">Курс построен так, чтобы втянуться без перегруза и дойти до заметной формы за месяц.</p>
+          </div>
+          <div class="program-note">Каждая тренировка открывается в личном кабинете: видео, таймер, техника и отметка выполнения.</div>
+        </div>
+
+        <div class="program-grid">
+          <article class="week">
+            <h3>Запуск</h3>
+            <p>Техника, суставная подготовка, базовые упражнения, первые замеры.</p>
+          </article>
+          <article class="week">
+            <h3>Тонус</h3>
+            <p>Ноги, корпус, спина, интервальные блоки и короткие финишеры.</p>
+          </article>
+          <article class="week">
+            <h3>Сила</h3>
+            <p>Усложнение движений, работа с темпом, прогрессия без инвентаря.</p>
+          </article>
+          <article class="week">
+            <h3>Форма</h3>
+            <p>Контрольная неделя, финальные замеры, план поддержки результата.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section proof" id="results">
+      <div class="wrap">
+        <p class="eyebrow">Результаты</p>
+        <h2>Цифры участников после первого потока</h2>
+
+        <div class="proof-grid">
+          <div class="metric"><strong>87%</strong><span>дошли до финальной недели</span></div>
+          <div class="metric"><strong>-3,8 см</strong><span>среднее изменение талии</span></div>
+          <div class="metric"><strong>4,9/5</strong><span>оценка удобства программы</span></div>
+          <blockquote class="quote">
+            <p>“Впервые не бросила тренировки через неделю. Всё коротко, понятно и без давления.”</p>
+            <span>Марина, участница первого потока</span>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section final" id="pay">
+      <div class="wrap">
+        <p class="eyebrow">Старт сегодня</p>
+        <h2>Оплати доступ и получи план на 28 дней</h2>
+
+        <div class="checkout">
+          <section class="price-card" aria-label="Форма оплаты">
+            <h3>Марафон “Форма дома”</h3>
+            <div class="price-value">2 990 ₽</div>
+            <p>Доступ к тренировкам, календарю, трекеру прогресса и чату поддержки.</p>
+            <ul class="includes">
+              <li>28 дней тренировок по 12-25 минут</li>
+              <li>План по неделям и контрольные замеры</li>
+              <li>Бонус: простые завтраки без подсчёта калорий</li>
+            </ul>
+            <form class="pay-form">
+              <input class="field" type="text" name="name" placeholder="Ваше имя" autocomplete="name" />
+              <input class="field" type="email" name="email" placeholder="Email для доступа" autocomplete="email" />
+              <button class="btn btn-primary" type="button">Перейти к оплате</button>
+            </form>
+            <p class="footer-note">Демо-форма. Для реального запуска подключите ЮKassa, CloudPayments или Tinkoff Pay.</p>
+          </section>
+
+          <div class="faq" aria-label="FAQ">
+            <details open>
+              <summary>Нужен ли инвентарь?</summary>
+              <p>Нет. Все тренировки можно делать с весом тела. Коврик желателен, но не обязателен.</p>
+            </details>
+            <details>
+              <summary>Подойдёт новичку?</summary>
+              <p>Да. В первой неделе есть техника и адаптация, а упражнения имеют упрощённые варианты.</p>
+            </details>
+            <details>
+              <summary>Сколько времени в день?</summary>
+              <p>В среднем 25 минут. В самые короткие дни - 12-15 минут.</p>
+            </details>
+            <details>
+              <summary>Когда будет доступ?</summary>
+              <p>Сразу после оплаты на указанный email придёт ссылка на личный кабинет.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
